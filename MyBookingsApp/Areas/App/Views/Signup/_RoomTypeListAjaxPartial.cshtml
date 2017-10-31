@@ -1,0 +1,25 @@
+﻿@model List<MyBookingsApp.Areas.App.Models.SignupRoomTypeViewModel>
+
+@for (int i = 0; i < Model.Count(); i++)
+{
+    <tr class="new-roomtype-unsaved">
+        <td>
+            @Html.DisplayFor(modelItem => Model[i].RoomTypeName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model[i].MinPeople)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model[i].MaxPeople)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model[i].MinPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model[i].DefaultAllotment)
+        </td>
+        <td>
+            <a href="~/App/Signup/DeleteRoomType" class="btn btn-danger roomtype-delete" data-key="@(Model[i].TempID)">Delete</a>
+        </td>
+    </tr>
+}

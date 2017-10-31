@@ -1,0 +1,22 @@
+﻿@model IEnumerable<MyBookingsApp.Areas.App.Models.Management.RoomTypeViewModel>
+
+@foreach (var item in Model)
+{
+    <tr class="roomtype-small-details">
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MinPeople)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaxPeople)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DefaultAllotment)
+        </td>
+        <td>
+            <a data-fancybox-ajax="/app/roomtypes/edit/@(item.ID)" class="btn btn-warning fancybox-load" data-type="ajax">Edit</a>
+        </td>
+    </tr>
+}

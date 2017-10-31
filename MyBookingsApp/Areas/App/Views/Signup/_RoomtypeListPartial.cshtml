@@ -1,0 +1,28 @@
+﻿@model MyBookingsApp.Areas.App.Models.SignupRoomTypeViewModel
+
+@using (Ajax.BeginForm("RoomTypeListPost", new AjaxOptions { HttpMethod = "POST", OnSuccess = "SuccessAjaxRoomType" }))
+{
+    @Html.AntiForgeryToken()
+    <tr id="new-roomtype">
+        <td>
+            @Html.EditorFor(model => model.RoomTypeName, new { htmlAttributes = new { @class = "form-control" } })
+        </td>
+        <td>
+            @Html.EditorFor(model => Model.MinPeople, new { htmlAttributes = new { @class = "form-control" } })
+        </td>
+        <td>
+            @Html.EditorFor(model => Model.MaxPeople, new { htmlAttributes = new { @class = "form-control" } })
+        </td>
+        <td>
+            @Html.EditorFor(model => Model.MinPrice, new { htmlAttributes = new { @class = "form-control" } })
+        </td>
+        <td>
+            @Html.EditorFor(model => Model.DefaultAllotment, new { htmlAttributes = new { @class = "form-control" } })
+        </td>
+        <td>
+            <input type="submit" value="Add" class="btn btn-primary btn-md" />
+        </td>
+    </tr>
+}
+
+

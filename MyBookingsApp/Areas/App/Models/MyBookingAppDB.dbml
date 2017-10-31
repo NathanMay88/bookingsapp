@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="MyBookingApp" Class="MyBookingAppDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=DESKTOP-1V4JFK7\SQLEXPRESS;Initial Catalog=MyBookingApp;Persist Security Info=True;User ID=bookingadmin" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="MyBookingAppConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.User_Property" Member="User_Properties">
+    <Type Name="User_Property">
+      <Column Name="User_ID" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="PropertyID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Association Name="Property_User_Property" Member="Property" ThisKey="PropertyID" OtherKey="ID" Type="Property" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Company" Member="Companies">
+    <Type Name="Company">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(75)" CanBeNull="true" />
+      <Column Name="Address1" Type="System.String" DbType="VarChar(45)" CanBeNull="true" />
+      <Column Name="Address2" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="Address3" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="Address4" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="Country" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(75)" CanBeNull="true" />
+      <Column Name="Phone" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Mobile" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="VATNumber" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="MonthlyCost" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="NumberOfProperties" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="NumberOfRooms" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Company_Property" Member="Properties" ThisKey="ID" OtherKey="CompanyID" Type="Property" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Customer" Member="Customers">
+    <Type Name="Customer">
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FirstName" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="LastName" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(75) NOT NULL" CanBeNull="false" />
+      <Column Name="Phone" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Mobile" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Address1" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="Address2" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="Address3" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="Address4" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="Country" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Notes" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="Customer_Booking" Member="Bookings" ThisKey="ID" OtherKey="CustomerID" Type="Booking" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Property" Member="Properties">
+    <Type Name="Property">
+      <Column Name="Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Address1" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="Address2" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="Address3" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="Address4" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="Country" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(75)" CanBeNull="true" />
+      <Column Name="Phone" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="NumberOfRooms" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="TotalBookings" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CompanyID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MinimumPrice" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Association Name="Property_User_Property" Member="User_Properties" ThisKey="ID" OtherKey="PropertyID" Type="User_Property" />
+      <Association Name="Property_Booking" Member="Bookings" ThisKey="ID" OtherKey="PropertyID" Type="Booking" />
+      <Association Name="Property_Rate" Member="Rates" ThisKey="ID" OtherKey="PropertyID" Type="Rate" />
+      <Association Name="Property_Roomtype" Member="Roomtypes" ThisKey="ID" OtherKey="PropertyID" Type="Roomtype" />
+      <Association Name="Company_Property" Member="Company" ThisKey="CompanyID" OtherKey="ID" Type="Company" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Price" Member="Prices">
+    <Type Name="Price">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Price" Member="Price1" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="StopSell" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="RateID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RoomTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MinimumStay" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Rate_Price" Member="Rate" ThisKey="RateID" OtherKey="ID" Type="Rate" IsForeignKey="true" />
+      <Association Name="Roomtype_Price" Member="Roomtype" ThisKey="RoomTypeID" OtherKey="ID" Type="Roomtype" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MainBooking_SubBooking" Member="MainBooking_SubBookings">
+    <Type Name="MainBooking_SubBooking">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MainBookingID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="SubBookingID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Association Name="Booking_MainBooking_SubBooking" Member="Booking" ThisKey="MainBookingID" OtherKey="ID" Type="Booking" IsForeignKey="true" />
+      <Association Name="Booking_MainBooking_SubBooking1" Member="Booking1" ThisKey="SubBookingID" OtherKey="ID" Type="Booking" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Booking" Member="Bookings">
+    <Type Name="Booking">
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CustomerID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="StartDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="EndDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Nights" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="RoomTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RateID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RoomTypeName" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="RateName" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Notes" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Paid" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="State" Type="System.Char" DbType="Char(1)" CanBeNull="true" />
+      <Column Name="PropertyID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BookingGuid" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
+      <Association Name="Booking_MainBooking_SubBooking" Member="MainBooking_SubBookings" ThisKey="ID" OtherKey="MainBookingID" Type="MainBooking_SubBooking" />
+      <Association Name="Booking_MainBooking_SubBooking1" Member="MainBooking_SubBookings1" ThisKey="ID" OtherKey="SubBookingID" Type="MainBooking_SubBooking" />
+      <Association Name="Customer_Booking" Member="Customer" ThisKey="CustomerID" OtherKey="ID" Type="Customer" IsForeignKey="true" />
+      <Association Name="Property_Booking" Member="Property" ThisKey="PropertyID" OtherKey="ID" Type="Property" IsForeignKey="true" />
+      <Association Name="Rate_Booking" Member="Rate" ThisKey="RateID" OtherKey="ID" Type="Rate" IsForeignKey="true" />
+      <Association Name="Roomtype_Booking" Member="Roomtype" ThisKey="RoomTypeID" OtherKey="ID" Type="Roomtype" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Availability" Member="Availabilities">
+    <Type Name="Availability">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="RoomtypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Availability" Member="Availability1" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="ClosedToAvailability" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="StopSell" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Roomtype_Availability" Member="Roomtype" ThisKey="RoomtypeID" OtherKey="ID" Type="Roomtype" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Rate" Member="Rates">
+    <Type Name="Rate">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="StartDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="EndDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="DaysAvailable" Type="System.String" DbType="NChar(7) NOT NULL" CanBeNull="false" />
+      <Column Name="RoomsAvailableon" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="StopSellTime" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
+      <Column Name="ClosedToArrival" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentRateID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Formula" Type="System.String" DbType="Char(3)" CanBeNull="true" />
+      <Column Name="PropertyID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Rate_Price" Member="Prices" ThisKey="ID" OtherKey="RateID" Type="Price" />
+      <Association Name="Rate_Booking" Member="Bookings" ThisKey="ID" OtherKey="RateID" Type="Booking" />
+      <Association Name="Property_Rate" Member="Property" ThisKey="PropertyID" OtherKey="ID" Type="Property" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Roomtype" Member="Roomtypes">
+    <Type Name="Roomtype">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
+      <Column Name="MinPeople" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="MaxPeople" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="MinPrice" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="DefaultAllotment" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="ParentRoomID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Formula" Type="System.String" DbType="NVarChar(3)" CanBeNull="true" />
+      <Column Name="PropertyID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ActualAllotment" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ShortDescription" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Association Name="Roomtype_Price" Member="Prices" ThisKey="ID" OtherKey="RoomTypeID" Type="Price" />
+      <Association Name="Roomtype_Booking" Member="Bookings" ThisKey="ID" OtherKey="RoomTypeID" Type="Booking" />
+      <Association Name="Roomtype_Availability" Member="Availabilities" ThisKey="ID" OtherKey="RoomtypeID" Type="Availability" />
+      <Association Name="Property_Roomtype" Member="Property" ThisKey="PropertyID" OtherKey="ID" Type="Property" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Session" Member="Sessions">
+    <Type Name="Session">
+      <Column Name="SessionID" Type="System.String" DbType="NVarChar(128) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CurrentPID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UserID" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+</Database>

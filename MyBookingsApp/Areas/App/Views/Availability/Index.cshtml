@@ -1,0 +1,43 @@
+﻿@model MyBookingsApp.Areas.App.Models.Management.AvailabilityListViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<div class="container">
+    <section class="options">
+
+        @*Options will be rendered in Partial*@
+
+
+    </section>
+
+    <section class="availability-grid col-lg-12 hidden-xs">
+        <table class="table">
+            <thead>
+                <tr>
+                    @for (int i = 0; i < Model.GroupedAvailabilityList.First().AvailabilityList.Count - 1; i++)
+            {
+                        <td> @(Model.GroupedAvailabilityList.First().AvailabilityList[i].Date.ToShortDateString())</td>
+                    }
+                </tr>
+            </thead>
+
+            @for (int e = 0; e < Model.GroupedAvailabilityList.Count - 1; e++)
+            {
+                <tr>
+                    <td>@(Model.GroupedAvailabilityList[e].RoomTypeName</td>
+                    @for (int i = 0; i < Model.GroupedAvailabilityList[e].AvailabilityList.Count - 1; i++)
+                {
+                        <td>@Html.EditorFor(a => a.GroupedAvailabilityList[e].AvailabilityList[i].Availability)</td>
+                    }
+                </tr>
+            }
+        </table>
+    </section>
+
+    <section class="availability-grid-phone col-xs-12 hidden-sm"></section>
+
+</div>

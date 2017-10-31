@@ -1,0 +1,339 @@
+﻿@model MyBookingsApp.Areas.App.Models.SignupViewModel
+
+@{
+    ViewBag.Title = "Signup to My Booking App";
+
+}
+
+<h2>Signup To My Booking App</h2>
+<div class="container">
+    <div class="row form-group">
+        <div class="col-xs-12">
+            <ul class="nav nav-pills nav-justified thumbnail setup-panel">
+                <li class="active">
+                    <a href="#step-1">
+                        <h4 class="list-group-item-heading">Step 1</h4>
+                        <p class="list-group-item-text">Company Details</p>
+                    </a>
+                </li>
+                <li class="disabled">
+                    <a href="#step-2">
+                        <h4 class="list-group-item-heading">Step 2</h4>
+                        <p class="list-group-item-text">Property Details</p>
+                    </a>
+                </li>
+                <li class="disabled">
+                    <a href="#step-3">
+                        <h4 class="list-group-item-heading">Step 3</h4>
+                        <p class="list-group-item-text">Room Type Details</p>
+                    </a>
+                </li>
+                <li class="disabled">
+                    <a href="#step-4">
+                        <h4 class="list-group-item-heading">Step 4</h4>
+                        <p class="list-group-item-text">Rate Plan Details</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+</div>
+
+
+<div class="row setup-content" id="step-1">
+    <div class="col-xs-12">
+        <div class="col-md-12 well text-center center-block">
+            <h3>Company Details</h3>
+            <p>
+                Enter your company details, these are the details of the company that owns your property.
+                These details are only used for invoicing purposes.
+            </p>
+            <!-- <form> -->
+            @using (Ajax.BeginForm("SaveCompanyDetails", new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "company-details-form", OnSuccess = "CompanyDetailsSuccess" }))
+            {
+                @(Html.AntiForgeryToken())
+                <div class="container col-xs-12">
+                    <div class="row clearfix" id="company-details-form">
+                        @(Html.Partial("_CompanyCreateAjax", Model.CompanySignupModel))
+                    </div>
+
+                    <input type="submit" value="Property Details" class="btn btn-primary btn-md" />
+
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row setup-content" id="step-2">
+        <div class="col-xs-12">
+            <div class="col-md-12 well text-center">
+                <h3 class="text-center">Property Details</h3>
+                <p>Enter the details of the property that you would like to manage.</p>
+                @using (Ajax.BeginForm("SavePropertyDetails", new AjaxOptions() { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "property-details-form", OnSuccess = "PropertyDetailsSuccess" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="container col-xs-12">
+                        <div class="row clearfix" id="property-details-form">
+                            @(Html.Partial("_PropertyCreateAjax", Model.PropertyDetails))
+                        </div>
+                    </div>
+                    <input type="submit" value="Property Details" class="btn btn-primary btn-md" />
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row setup-content" id="step-3">
+        <div class="col-xs-12">
+            <div class="col-md-12 well text-center">
+                <h3 class="text-center">Room Type Details</h3>
+                <p>These are the details of the Rooms within your property, More information can be added within the system, but this is just enough to get you up and running.</p>
+                <div id="roomtype-input">
+                    <table class="table">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RoomTypeDetails.RoomtypeList.FirstOrDefault().RoomTypeName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RoomTypeDetails.RoomtypeList.FirstOrDefault().MinPeople)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RoomTypeDetails.RoomtypeList.FirstOrDefault().MaxPeople)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RoomTypeDetails.RoomtypeList.FirstOrDefault().MinPrice)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RoomTypeDetails.RoomtypeList.FirstOrDefault().DefaultAllotment)
+                            </th>
+                            <th>Action</th>
+
+                        </tr>
+                        @(Html.Partial("_RoomTypeListAjaxPartial", Model.RoomTypeDetails.RoomtypeList.ToList()))
+
+                        @(Html.Partial("_RoomtypeListPartial", new MyBookingsApp.Areas.App.Models.SignupRoomTypeViewModel()))
+
+                    </table>
+                </div>
+                <button id="activate-step-4" class="btn btn-primary btn-md">Rate Details <span class="glyphicon glyphicon-arrow-right"></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row setup-content" id="step-4">
+        <div class="col-xs-12">
+            <div class="col-md-12 well text-center center-block">
+                <h3 class="text-center">Rate Details</h3>
+                <p>Put in the details of the Rates that you use, e.g. B&amp;B or Room Only. These are the Rates that you operate and not the prices.</p>
+                <div id="rate-input">
+
+                    <div>
+                        <table class="table">
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.RateDetails.RateList.FirstOrDefault().RateName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.RateDetails.RateList.FirstOrDefault().StopSellTime)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.RateDetails.RateList.FirstOrDefault().ClosedToArrival)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.RateDetails.RateList.FirstOrDefault().SelectedDays)
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                            @Html.Partial("_RateListAjaxPartial", Model.RateDetails.RateList.ToList())
+
+                            @(Html.Partial("_RateCreatePartial", new MyBookingsApp.Areas.App.Models.SignupRateViewModel()))
+                        </table>
+                        
+                        @using (Html.BeginForm("Signup", "Signup", FormMethod.Post))
+                        {
+                            <input type="hidden" name="save" value="true" />
+                            <input type="submit" value="Sign Up" class="btn btn-primary" />
+                        }
+                    </div>
+                    <link href="http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/css/bootstrap-multiselect.css" rel="stylesheet" type="text/css" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link href="~/Content/jquery.fancybox-buttons.css" rel="stylesheet" />
+<link href="~/Content/jquery.fancybox-thumbs.css" rel="stylesheet" />
+<link href="~/Content/jquery.fancybox.css" rel="stylesheet" />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    
+
+    <script src="~/Scripts/jquery.fancybox.js"></script>
+    <script src="~/Scripts/jquery.fancybox-buttons.js"></script>
+    <script src="~/Scripts/jquery.fancybox-media.js"></script>
+    <script src="~/Scripts/jquery.fancybox-thumbs.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script src="http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/js/bootstrap-multiselect.js"></script>
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Scripts/bootstrap-datetimepicker.js"></script>
+    <link href="~/Content/bootstrap-datetimepicker.css" rel="stylesheet" />
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#datetimepicker3').datetimepicker({
+                format: 'LT'
+            });
+
+            $('#selecteddays-dropdown').multiselect({
+                includeSelectAllOption: true
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+
+        function SuccessAjaxRate(data) {
+            $('.new-rate-unsaved').remove();
+            $('#new-rate').before(data);
+            $(".rate-delete").click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "/app/signup/deleterate",
+                    data: { TempID: $(this).attr('data-key') },
+                    type: 'post',
+                    success: function (data) {
+                        // do something
+                        loadRateHTML(data)
+                    }
+                });
+
+            });
+        }
+
+        function loadRateHTML(data) {
+            $('.new-rate-unsaved').remove();
+            $('#new-rate').before(data);
+            $(".rate-delete").click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "/app/signup/deleterate",
+                    data: { TempID: $(this).attr('data-key') },
+                    type: 'post',
+                    success: function (data) {
+                        // do something
+                        loadRateHTML(data)
+                    }
+                });
+
+            });
+        }
+
+        function SuccessAjaxRoomType(data) {
+            $('.new-roomtype-unsaved').remove();
+            $('#new-roomtype').before(data);
+            $(".roomtype-delete").click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "/app/signup/deleteroomtype",
+                    data: { TempID: $(this).attr('data-key') },
+                    type: 'post',
+                    success: function (data) {
+                        // do something
+                        loadRoomTypeHTML(data)
+
+                    }
+                });
+
+            });
+        }
+        function loadRoomTypeHTML(data) {
+            $('.new-roomtype-unsaved').remove();
+            $('#new-roomtype').before(data);
+            $(".roomtype-delete").click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "/app/signup/deleteroomtype",
+                    data: { TempID: $(this).attr('data-key') },
+                    type: 'post',
+                    success: function (data) {
+                        // do something
+                        loadRoomTypeHTML(data)
+
+                    }
+                });
+
+            });
+        }
+
+        function CompanyDetailsSuccess(data) {
+
+            $('ul.setup-panel li:eq(1)').removeClass('disabled');
+            $('ul.setup-panel li a[href="#step-2"]').trigger('click');
+
+        }
+
+        function PropertyDetailsSuccess(data) {
+
+            $('ul.setup-panel li:eq(2)').removeClass('disabled');
+            $('ul.setup-panel li a[href="#step-3"]').trigger('click');
+
+        }
+
+        $(document).ready(function () {
+
+            var navListItems = $('ul.setup-panel li a'),
+                allWells = $('.setup-content');
+
+            allWells.hide();
+
+            navListItems.click(function (e) {
+                e.preventDefault();
+                var $target = $($(this).attr('href')),
+                    $item = $(this).closest('li');
+
+                if (!$item.hasClass('disabled')) {
+                    navListItems.closest('li').removeClass('active');
+                    $item.addClass('active');
+                    allWells.hide();
+                    $target.show();
+                }
+            });
+
+            $('ul.setup-panel li.active a').trigger('click');
+
+            // DEMO ONLY //
+            $('#activate-step-2').on('click', function (e) {
+                $('ul.setup-panel li:eq(1)').removeClass('disabled');
+                $('ul.setup-panel li a[href="#step-2"]').trigger('click');
+                $(this).remove();
+            })
+
+            $('#activate-step-3').on('click', function (e) {
+                $('ul.setup-panel li:eq(2)').removeClass('disabled');
+                $('ul.setup-panel li a[href="#step-3"]').trigger('click');
+                $(this).remove();
+            })
+
+            $('#activate-step-4').on('click', function (e) {
+                $('ul.setup-panel li:eq(3)').removeClass('disabled');
+                $('ul.setup-panel li a[href="#step-4"]').trigger('click');
+                $(this).remove();
+            })
+
+            $('#activate-step-3').on('click', function (e) {
+                $('ul.setup-panel li:eq(2)').removeClass('disabled');
+                $('ul.setup-panel li a[href="#step-3"]').trigger('click');
+                $(this).remove();
+            })
+        });
+    </script>
+}

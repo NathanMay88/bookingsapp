@@ -1,0 +1,29 @@
+﻿@model IEnumerable<MyBookingsApp.Areas.App.Models.Management.RatePlanViewModel>
+
+
+@foreach (var item in Model)
+{
+    <tr class="rate-small-details">
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EndDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ParentRateID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClosedToArrival)
+        </td>
+        <td>
+            @item.AvailableDays.Where(a => a.Selected == true).Count();
+        </td>
+        <td>
+            <a data-fancybox-ajax="/app/rates/edit/@(item.ID)" class="btn btn-warning fancybox-load" data-type="ajax">Edit</a>
+        </td>
+    </tr>
+}

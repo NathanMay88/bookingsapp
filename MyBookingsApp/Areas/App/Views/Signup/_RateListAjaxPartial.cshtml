@@ -1,0 +1,23 @@
+﻿@model List<MyBookingsApp.Areas.App.Models.SignupRateViewModel>
+
+
+@for (int i = 0; i < Model.Count(); i++)
+{
+    <tr class="new-rate-unsaved">
+        <td>
+            @Html.DisplayFor(modelItem => Model[i].RateName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model[i].StopSellTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model[i].ClosedToArrival)
+        </td>
+        <td>
+            @(Model[i].SelectedDays.Where(a => a.Selected != false).Count())
+        </td>
+        <td>
+            <a href="~/App/Signup/DeleteRate" class="btn btn-danger rate-delete" data-key="@(Model[i].TempID)">Delete</a>
+        </td>
+    </tr>
+}
