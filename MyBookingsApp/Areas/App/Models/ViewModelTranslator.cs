@@ -142,7 +142,7 @@ namespace MyBookingsApp.Areas.App.Models
                 ParentRateID = DBModel.ParentRateID == null ? 0 : (int)DBModel.ParentRateID,
 
             };
-           
+
             List<string> availableDays = DBModel.DaysAvailable.Split(',').ToList();
             for (int i = 0; i < availableDays.Count; i++)
             {
@@ -188,7 +188,7 @@ namespace MyBookingsApp.Areas.App.Models
                     ParentRateID = item.ParentRateID == null ? 0 : (int)item.ParentRateID
 
                 };
-                
+
                 List<string> availableDays = item.DaysAvailable.Split(',').ToList();
                 for (int i = 0; i < availableDays.Count; i++)
                 {
@@ -197,7 +197,7 @@ namespace MyBookingsApp.Areas.App.Models
                     {
                         VMRate.AvailableDays[val].Selected = true;
                     }
-                    
+
                 }
                 response.Add(VMRate);
             }
@@ -208,22 +208,33 @@ namespace MyBookingsApp.Areas.App.Models
         {
             Management.AvailabilityListViewModel VMAvailability = new Management.AvailabilityListViewModel()
             {
-                AvailabilityList = new List<Management.AvailabilityItemViewModel>()
+                GroupedAvailabilityList = new List<Management.AvailabilityGroupedViewModel>()
             };
-            foreach (var item in DBModel)
-            {
-                Management.AvailabilityItemViewModel AvailItem = new Management.AvailabilityItemViewModel()
-                {
-                    Availability = (short)item.Availability1,
-                    ClosedToAvailability = (short)item.ClosedToAvailability,
-                    Date = item.Date,
-                    StopSell = item.StopSell
 
+
+            foreach (var outitem in DBModel.GroupBy(a => a.RoomtypeID, b => b))
+            {
+                Management.AvailabilityGroupedViewModel availList = new Management.AvailabilityGroupedViewModel()
+                {
+                    RoomTypeID = outitem.Key,
+                    RoomTypeName = RoomTypeList.Where(a => a.ID == outitem.Key).Select(b => b.Name).First(),
+                    AvailabilityList = new List<Management.AvailabilityItemViewModel>()
                 };
-                VMAvailability.AvailabilityList.Add(AvailItem);
+                foreach (var item in outitem)
+                {
+                    Management.AvailabilityItemViewModel AvailItem = new Management.AvailabilityItemViewModel()
+                    {
+                        Availability = (short)item.Availability1,
+                        ClosedToAvailability = (short)item.ClosedToAvailability,
+                        Date = item.Date,
+                        StopSell = item.StopSell
+
+                    };
+                    availList.AvailabilityList.Add(AvailItem);        
+                }
+                VMAvailability.GroupedAvailabilityList.Add(availList);
             }
-            VMAvailability.RoomTypeID = DBModel.First().RoomtypeID;
-            VMAvailability.RoomTypeName = DBModel.First().Roomtype.Name;
+            
             VMAvailability.Options = new Management.AvailabilityOptionsViewModel()
             {
                 EndDate = DBModel.Last().Date,

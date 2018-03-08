@@ -18,23 +18,25 @@
         <table class="table">
             <thead>
                 <tr>
-                    @for (int i = 0; i < Model.GroupedAvailabilityList.First().AvailabilityList.Count - 1; i++)
-            {
-                        <td> @(Model.GroupedAvailabilityList.First().AvailabilityList[i].Date.ToShortDateString())</td>
+                    <td>Date</td>
+                    @for (int i = 0; i <= Model.Options.RoomTypeList.Count - 1; i++)
+                    {
+                        <td>@(Model.Options.RoomTypeList[i].Text) </td>
                     }
                 </tr>
             </thead>
-
-            @for (int e = 0; e < Model.GroupedAvailabilityList.Count - 1; e++)
-            {
-                <tr>
-                    <td>@(Model.GroupedAvailabilityList[e].RoomTypeName</td>
-                    @for (int i = 0; i < Model.GroupedAvailabilityList[e].AvailabilityList.Count - 1; i++)
+            <tbody>
+                @for (int i = 0; i <= Model.GroupedAvailabilityList.First().AvailabilityList.Count -1; i++)
                 {
-                        <td>@Html.EditorFor(a => a.GroupedAvailabilityList[e].AvailabilityList[i].Availability)</td>
-                    }
-                </tr>
-            }
+                    <tr>
+                        <td>@(Model.GroupedAvailabilityList.First().AvailabilityList[i].Date.ToShortDateString())</td>
+                        @for (int j = 0; j <= Model.GroupedAvailabilityList.Count -1; j++)
+                        {
+                            <td>@Html.EditorFor(a=>a.GroupedAvailabilityList[j].AvailabilityList[i].Availability, new { htmlAttributes = new { @class = "form-control" } })</td>
+                        }
+                    </tr>
+                }
+            </tbody>
         </table>
     </section>
 

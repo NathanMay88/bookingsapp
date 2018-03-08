@@ -13,7 +13,7 @@ namespace MyBookingsApp.Areas.App.Controllers
         {
             using (DataAccess.MyBookingDAL _c = new DataAccess.MyBookingDAL())
             {
-                List<Models.Availability> AvailabilityList = _c.GetAvailabilities(_c.CurrentProperty, _c.GetListOfRoomTypes(_c.CurrentProperty).First().ID, DateTime.Now.Date, DateTime.Now.AddDays(30).Date).ToList();
+                List<Models.Availability> AvailabilityList = _c.GetAvailabilities(_c.CurrentProperty, _c.GetListOfRoomTypes(_c.CurrentProperty), DateTime.Now.Date, DateTime.Now.AddDays(30).Date).ToList();
                 List<Models.Roomtype> RoomTypeList = _c.GetListOfRoomTypes(_c.CurrentProperty);
                 return View(Models.ViewModelTranslator.ToVM(AvailabilityList, RoomTypeList));
             }
@@ -25,7 +25,7 @@ namespace MyBookingsApp.Areas.App.Controllers
         {
             using (DataAccess.MyBookingDAL _c = new DataAccess.MyBookingDAL())
             {
-                List<Models.Availability> AvailabilityList = _c.GetAvailabilities(_c.CurrentProperty, model.Options.SelectedRoomTypeID, model.Options.StartDate, model.Options.EndDate).ToList();
+                List<Models.Availability> AvailabilityList = _c.GetAvailabilities(_c.CurrentProperty, _c.GetListOfRoomTypes(_c.CurrentProperty), model.Options.StartDate, model.Options.EndDate).ToList();
                 List<Models.Roomtype> RoomTypeList = _c.GetListOfRoomTypes(_c.CurrentProperty);
                 return View(Models.ViewModelTranslator.ToVM(AvailabilityList, RoomTypeList));
             }

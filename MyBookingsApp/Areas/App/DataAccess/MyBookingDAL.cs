@@ -119,11 +119,16 @@ namespace MyBookingsApp.Areas.App.DataAccess
             }
         }
 
-        public int CheckForProperty()
+        /// <summary>
+        /// Returns the first PropertyID for the given userID, This routine ignores the _userID held within the instance.
+        /// </summary>
+        /// <param name="curUserID">UserID to test</param>
+        /// <returns>-1 if no Property, PropertyID of the first Property</returns>
+        public int CheckForProperty(string curUserID)
         {
             try
             {
-                return _c.User_Properties.FirstOrDefault(a => a.User_ID == _userID).PropertyID;
+                return _c.User_Properties.FirstOrDefault(a => a.User_ID == curUserID).PropertyID;
             }
             catch (Exception ex)
             {
@@ -492,20 +497,61 @@ namespace MyBookingsApp.Areas.App.DataAccess
             }
         }
 
-        public List<Availability> GetAvailabilities(int PropertyID, int RoomTypeID, DateTime StartDate, DateTime EndDate)
+        public List<Availability> GetAvailabilities(int PropertyID, List<Roomtype> RoomTypeIDs, DateTime StartDate, DateTime EndDate)
         {
+            List<Availability> returnAvail = new List<Availability>();
             try
             {
-                if (_c.Roomtypes.Any(a => a.PropertyID == PropertyID && a.ID == RoomTypeID))
+                for (int i = 0; i < RoomTypeIDs.Count; i++)
                 {
-                    return _c.Availabilities.Where(a => a.RoomtypeID == RoomTypeID && (a.Date >= StartDate && a.Date <= EndDate)).ToList();
+                if (_c.Roomtypes.Any(a => a.PropertyID == PropertyID && a.ID == RoomTypeIDs[i].ID))
+                {
+                        returnAvail.AddRange(_c.Availabilities.Where(a => a.Roomtype.PropertyID == PropertyID && (a.Date >= StartDate && a.Date <= EndDate) && a.RoomtypeID == RoomTypeIDs[i].ID).ToList());
                 }
-                return null;
+                }
+                return returnAvail;
             }
             catch (Exception ex)
             {
                 Error = ex;
                 return null;
+            }
+        }
+
+        public Dictionary<int, List<Availability>> GetAllAvailabilities(DateTime StartDate, DateTime EndDate)
+        {
+            try
+            {
+                return _c.Roomtypes.Where(a => a.PropertyID == this.PID).ToDictionary(b => b.ID, c => c.Availabilities.Where(a => a.Date >= StartDate && a.Date <= EndDate).ToList());
+            }
+            catch (Exception ex)
+            {
+
+                Error = ex;
+                return null;
+            }
+        }
+
+        public bool CreateDefaultAvailability(List<Roomtype> RoomTypes)
+        {
+            List<Availability> AvailList = new List<Availability>();
+            foreach (var item in RoomTypes)
+            {
+                for (int i = 0; i < 365; i++)
+                {
+                    AvailList.Add(new Availability() { Availability1 = 0, ClosedToAvailability = 0, RoomtypeID = item.ID, StopSell = false, Date = DateTime.Now.AddDays(i).Date });
+                }
+            }
+            try
+            {
+                _c.Availabilities.InsertAllOnSubmit(AvailList);
+                _c.SubmitChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Exception t = ex;
+                return false;
             }
         }
 
