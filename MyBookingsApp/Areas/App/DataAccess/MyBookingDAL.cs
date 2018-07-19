@@ -181,6 +181,8 @@ namespace MyBookingsApp.Areas.App.DataAccess
             {
                 _c.Roomtypes.InsertOnSubmit(NewRoomType);
                 _c.SubmitChanges();
+                CreateDefaultAvailability(NewRoomType);
+                CreateDefaultPricesOnRoom(NewRoomType.ID);
                 return true;
             }
             catch (Exception ex)
@@ -237,6 +239,7 @@ namespace MyBookingsApp.Areas.App.DataAccess
                 originalRoomType.MinPrice = EdittedRoomType.MinPrice;
                 originalRoomType.Name = EdittedRoomType.Name;
                 originalRoomType.ParentRoomID = EdittedRoomType.ParentRoomID;
+                originalRoomType.Description = EdittedRoomType.Description;
                 _c.SubmitChanges();
                 return true;
             }
@@ -445,6 +448,38 @@ namespace MyBookingsApp.Areas.App.DataAccess
             }
             return false;
         }
+
+        public bool CreateDefaultPricesOnRoom(int newRoomTypeID)
+        {
+
+            //Get a list of rates for this user
+            List<Rate> rateList = _c.Properties.SingleOrDefault(a => a.Roomtypes.Single(b => b.ID == newRoomTypeID) != null).Rates.ToList();
+            foreach (Rate item in rateList)
+            {
+
+            
+            List<Price> NewPrices = new List<Price>();
+            for (int i = 0; i < 365; i++)
+            {
+                NewPrices.Add(new Price() { Date = DateTime.Now.AddDays(i), MinimumStay = 1, Price1 = 0.00M, RateID = item.ID, RoomTypeID = newRoomTypeID, StopSell = false });
+            }
+
+            try
+            {
+                _c.Prices.InsertAllOnSubmit(NewPrices);
+                _c.SubmitChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            }
+
+
+            return false;
+        }
         #endregion
 
         #region Availability
@@ -470,19 +505,19 @@ namespace MyBookingsApp.Areas.App.DataAccess
             }
         }
 
-        public bool ChangeMultipleAvailabilities(int PropertyID, int RoomTypeID, Dictionary<DateTime, int> NewAvailabilityValues)
+        public bool ChangeMultipleAvailabilities(int PropertyID, int RoomTypeID, List<Models.Availability> NewAvailabilityValues)
         {
             try
             {
                 if (_c.Roomtypes.Single(a => a.ID == RoomTypeID).PropertyID == PropertyID)
                 {
-                    DateTime StartDate = NewAvailabilityValues.First().Key;
-                    DateTime EndDate = NewAvailabilityValues.Last().Key;
+                    DateTime StartDate = NewAvailabilityValues.First().Date;
+                    DateTime EndDate = NewAvailabilityValues.Last().Date;
                     List<Availability> AvailList = _c.Availabilities.Where(a => a.RoomtypeID == RoomTypeID && (a.Date >= StartDate && a.Date <= EndDate)).ToList();
 
                     foreach (var item in AvailList)
                     {
-                        item.Availability1 = (short)NewAvailabilityValues.Single(a => a.Key == item.Date).Value;
+                        item.Availability1 = (short)NewAvailabilityValues.Single(a => a.Date == item.Date).Availability1;
                     }
 
                     _c.SubmitChanges();
@@ -532,16 +567,15 @@ namespace MyBookingsApp.Areas.App.DataAccess
             }
         }
 
-        public bool CreateDefaultAvailability(List<Roomtype> RoomTypes)
+        public bool CreateDefaultAvailability(Roomtype roomTypeItem)
         {
             List<Availability> AvailList = new List<Availability>();
-            foreach (var item in RoomTypes)
-            {
+          
                 for (int i = 0; i < 365; i++)
                 {
-                    AvailList.Add(new Availability() { Availability1 = 0, ClosedToAvailability = 0, RoomtypeID = item.ID, StopSell = false, Date = DateTime.Now.AddDays(i).Date });
+                    AvailList.Add(new Availability() { Availability1 = 0, ClosedToAvailability = 0, RoomtypeID = roomTypeItem.ID, StopSell = false, Date = DateTime.Now.AddDays(i).Date });
                 }
-            }
+            
             try
             {
                 _c.Availabilities.InsertAllOnSubmit(AvailList);

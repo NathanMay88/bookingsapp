@@ -1,0 +1,73 @@
+﻿@model MyBookingsApp.Areas.App.Models.Management.PriceListViewModel
+
+@{
+    ViewBag.Title = "Pricing";
+}
+
+<h2>Pricing</h2>
+
+@using (Html.BeginForm("Index", "Availability"))
+{
+
+
+
+    <div class="container">
+        <section class="options">
+            @for (int i = 0; i < Model.GroupedPriceList.Count; i++)
+            {
+                @Html.HiddenFor(a => a.GroupedPriceList[i].RoomTypeID)
+            }
+            @*Options will be rendered in Partial*@
+            @Html.EditorFor(a => a.PriceOptions.StartDate, new { htmlAttributes = new { @class = "datepicker" } })
+            @Html.EditorFor(a => a.PriceOptions.EndDate, new { htmlAttributes = new { @class = "datepicker" } })
+
+        </section>
+
+        <section class="availability-grid col-lg-12 hidden-xs">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>Date</td>
+                        @for (int i = 0; i <= Model.GroupedPriceList.Count - 1; i++)
+                        {
+                            <td>@(Model.GroupedPriceList[i].RoomTypeName) </td>
+                            @Html.HiddenFor(a => a.GroupedPriceList[i].RoomTypeID)
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @for (int i = 0; i <= Model.GroupedPriceList.First().PriceList.Count - 1; i++)
+                    {
+
+                        <tr>
+                            <td>@(Model.GroupedPriceList.First().PriceList[i].Date.ToShortDateString())</td>
+                            @for (int j = 0; j <= Model.GroupedPriceList.Count - 1; j++)
+                            {
+                                <td>
+                                    @Html.EditorFor(a => a.GroupedPriceList[j].PriceList[i].Price, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.HiddenFor(a => a.GroupedPriceList[j].PriceList[i].Date)
+                            </td>
+
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <input type="submit" class="btn btn-lg" value="Save" />
+
+        </section>
+
+        <section class="availability-grid-phone col-xs-12 hidden-sm"></section>
+
+    </div>
+
+    @section scripts{
+
+        <script>
+        jQuery('.datepicker').datepicker({
+            format: 'dd/mm/yyyy',
+        });
+        </script>
+    }
+}

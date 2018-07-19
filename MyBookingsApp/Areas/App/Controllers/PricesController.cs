@@ -3,87 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MyBookingsApp.Areas.App.Models.Management;
 
 namespace MyBookingsApp.Areas.App.Controllers
 {
     public class PricesController : Controller
     {
+        [HttpGet]
         // GET: App/Prices
         public ActionResult Index()
         {
-            return View();
+            PriceListViewModel model = new PriceListViewModel();
+            using (DataAccess.MyBookingDAL _c = new DataAccess.MyBookingDAL())
+            {
+                List<Models.Rate> RateList = _c.GetListOfRates(_c.CurrentProperty);
+                if (RateList.Count == 0)
+                {
+                    RedirectToAction("Index", "Rate");
+                }
+                List<Models.Price> PriceList = _c.GetPricesForDates(RateList.First().ID, DateTime.Now.Date, 30).ToList();
+                
+                return View(Models.ViewModelTranslator.ToVM(PriceList, RateList.First().ID, RateList));
+            }
+            
         }
 
-        // GET: App/Prices/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: App/Prices/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: App/Prices/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Index(PriceListViewModel model)
         {
-            try
-            {
-                // TODO: Add insert logic here
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: App/Prices/Edit/5
-        public ActionResult Edit(int id)
-        {
             return View();
-        }
-
-        // POST: App/Prices/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: App/Prices/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: App/Prices/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

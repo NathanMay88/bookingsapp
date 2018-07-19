@@ -7,7 +7,7 @@ namespace MyBookingsApp.Areas.App.Models.Management
 {
     public class PriceListViewModel
     {
-        public List<PriceViewModel> PriceList { get; set; }
+        public List<PriceGroupedViewModel> GroupedPriceList { get; set; }
         public int SelectedRateID { get; set; }
         public PriceOptionsViewModel PriceOptions { get; set; }
         

@@ -6,40 +6,67 @@
 
 <h2>Index</h2>
 
-<div class="container">
-    <section class="options">
-
-        @*Options will be rendered in Partial*@
+@using (Html.BeginForm("Index", "Availability"))
+{
 
 
-    </section>
 
-    <section class="availability-grid col-lg-12 hidden-xs">
-        <table class="table">
-            <thead>
-                <tr>
-                    <td>Date</td>
-                    @for (int i = 0; i <= Model.Options.RoomTypeList.Count - 1; i++)
-                    {
-                        <td>@(Model.Options.RoomTypeList[i].Text) </td>
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                @for (int i = 0; i <= Model.GroupedAvailabilityList.First().AvailabilityList.Count -1; i++)
-                {
+    <div class="container">
+        <section class="options">
+            @for (int i = 0; i < Model.GroupedAvailabilityList.Count; i++)
+            {
+                @Html.HiddenFor(a => a.GroupedAvailabilityList[i].RoomTypeID)
+            }
+            @*Options will be rendered in Partial*@
+            @Html.EditorFor(a=>a.Options.StartDate, new { htmlAttributes = new { @class = "datepicker" } })
+            @Html.EditorFor(a=>a.Options.EndDate, new { htmlAttributes = new { @class = "datepicker" } })
+
+        </section>
+
+        <section class="availability-grid col-lg-12 hidden-xs">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>@(Model.GroupedAvailabilityList.First().AvailabilityList[i].Date.ToShortDateString())</td>
-                        @for (int j = 0; j <= Model.GroupedAvailabilityList.Count -1; j++)
+                        <td>Date</td>
+                        @for (int i = 0; i <= Model.Options.RoomTypeList.Count - 1; i++)
                         {
-                            <td>@Html.EditorFor(a=>a.GroupedAvailabilityList[j].AvailabilityList[i].Availability, new { htmlAttributes = new { @class = "form-control" } })</td>
+                            <td>@(Model.Options.RoomTypeList[i].Text) </td>
+                            @Html.HiddenFor(a => a.Options.RoomTypeList[i].Value)
                         }
                     </tr>
-                }
-            </tbody>
-        </table>
-    </section>
+                </thead>
+                <tbody>
 
-    <section class="availability-grid-phone col-xs-12 hidden-sm"></section>
+                    @for (int i = 0; i <= Model.GroupedAvailabilityList.First().AvailabilityList.Count - 1; i++)
+                    {
 
-</div>
+                        <tr>
+                            <td>@(Model.GroupedAvailabilityList.First().AvailabilityList[i].Date.ToShortDateString())</td>
+                            @for (int j = 0; j <= Model.GroupedAvailabilityList.Count - 1; j++)
+                            {
+                                <td>@Html.EditorFor(a => a.GroupedAvailabilityList[j].AvailabilityList[i].Availability, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.HiddenFor(a=>a.GroupedAvailabilityList[j].AvailabilityList[i].Date)
+                            </td>
+
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <input type="submit" class="btn btn-lg" value="Save" />
+
+        </section>
+
+        <section class="availability-grid-phone col-xs-12 hidden-sm"></section>
+
+    </div>
+
+    @section scripts{
+        
+    <script>
+        jQuery('.datepicker').datepicker({
+            format: 'dd/mm/yyyy',
+        });
+    </script>
+    }
+}

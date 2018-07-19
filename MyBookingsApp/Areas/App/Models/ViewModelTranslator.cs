@@ -110,6 +110,18 @@ namespace MyBookingsApp.Areas.App.Models
             return newAvail;
         }
 
+        public static List<Price> FromVM(Models.Management.PriceListViewModel VM)
+        {
+            List<Price> newPrices = new List<Price>();
+            foreach (var outItem in VM.GroupedPriceList)
+            {
+                outItem.PriceList.Select(a => new Price() { Date = a.Date, ID = a.ID, MinimumStay = a.MinimumStay, Price1 = (decimal)a.Price, StopSell = a.StopSell, RateID = outItem.RateID, RoomTypeID = outItem.RoomTypeID }).ToList().ForEach(c => newPrices.Add(c));
+            }
+
+
+            return newPrices;
+        }
+
         #endregion
 
         #region To VM
@@ -210,8 +222,6 @@ namespace MyBookingsApp.Areas.App.Models
             {
                 GroupedAvailabilityList = new List<Management.AvailabilityGroupedViewModel>()
             };
-
-
             foreach (var outitem in DBModel.GroupBy(a => a.RoomtypeID, b => b))
             {
                 Management.AvailabilityGroupedViewModel availList = new Management.AvailabilityGroupedViewModel()
@@ -228,13 +238,11 @@ namespace MyBookingsApp.Areas.App.Models
                         ClosedToAvailability = (short)item.ClosedToAvailability,
                         Date = item.Date,
                         StopSell = item.StopSell
-
                     };
-                    availList.AvailabilityList.Add(AvailItem);        
+                    availList.AvailabilityList.Add(AvailItem);
                 }
                 VMAvailability.GroupedAvailabilityList.Add(availList);
             }
-            
             VMAvailability.Options = new Management.AvailabilityOptionsViewModel()
             {
                 EndDate = DBModel.Last().Date,
@@ -244,6 +252,27 @@ namespace MyBookingsApp.Areas.App.Models
                 RoomTypeList = RoomTypeList.Select(a => new System.Web.Mvc.SelectListItem() { Text = a.Name, Value = a.ID.ToString(), Selected = (a.ID == DBModel.First().RoomtypeID) ? true : false }).ToList()
             };
             return VMAvailability;
+        }
+
+        public static Models.Management.PriceListViewModel ToVM(List<Price> DBModel, int RateID, List<Rate> rateList)
+        {
+            Models.Management.PriceListViewModel PriceVM = new Management.PriceListViewModel() { GroupedPriceList = new List<Management.PriceGroupedViewModel>() };
+
+            foreach (var item in DBModel.GroupBy(a => a.RoomTypeID, b => b))
+            {
+                Management.PriceGroupedViewModel priceGroup = new Management.PriceGroupedViewModel()
+                {
+                    RoomTypeID = item.Key,
+                    RateName = item.First().Rate.Name,
+                    RoomTypeName = item.First().Roomtype.Name,
+                    RateID = RateID,
+                    PriceList = item.Select(a => new Management.PriceViewModel() { Date = a.Date, ID = a.ID, MinimumStay = a.MinimumStay, Price = (float)a.Price1, StopSell = a.StopSell }).ToList()
+                };
+                PriceVM.GroupedPriceList.Add(priceGroup);
+                PriceVM.PriceOptions = new Models.Management.PriceOptionsViewModel() { StartDate = DateTime.Now.Date, EndDate = DateTime.Now.AddDays(30).Date, RateList = rateList.Select(a => new System.Web.Mvc.SelectListItem() { Text = a.Name, Value = a.ID.ToString(), Selected = (a.ID == DBModel.First().ID) ? true : false }).ToList() };
+            }
+
+            return PriceVM;
         }
 
         #endregion

@@ -12,9 +12,6 @@ namespace MyBookingsApp.Areas.App.Models.Management
         public float Price { get; set; }
         public bool StopSell { get; set; }
         public int MinimumStay { get; set; }
-        public int RoomTypeID { get; set; }
-        public string RoomTypeName { get; set; }
-        public int RateID { get; set; }
-        public string RateName {get;set;}
+
     }
 }
