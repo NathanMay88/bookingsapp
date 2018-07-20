@@ -480,6 +480,33 @@ namespace MyBookingsApp.Areas.App.DataAccess
 
             return false;
         }
+
+        public bool ChangeMultiplePrices(int PropertyID,int RateID, int RoomID,  List<Models.Price> NewPriceValues)
+        {
+            try
+            {
+                if (_c.Rates.Single(a => a.ID == RateID).PropertyID == PropertyID)
+                {
+                    DateTime StartDate = NewPriceValues.First().Date;
+                    DateTime EndDate = NewPriceValues.Last().Date;
+                    List<Price> PriceList = _c.Prices.Where(a => (a.RateID == RateID  && a.RoomTypeID == RoomID) && (a.Date >= StartDate && a.Date <= EndDate)).ToList();
+
+                    foreach (var item in PriceList)
+                    {
+                        item.Price1 = (decimal)NewPriceValues.Single(a => a.Date == item.Date).Price1;
+                    }
+
+                    _c.SubmitChanges();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Error = ex;
+                return false;
+            }
+        }
         #endregion
 
         #region Availability

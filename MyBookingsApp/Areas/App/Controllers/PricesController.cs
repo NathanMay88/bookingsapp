@@ -31,8 +31,23 @@ namespace MyBookingsApp.Areas.App.Controllers
         [HttpPost]
         public ActionResult Index(PriceListViewModel model)
         {
+            using (DataAccess.MyBookingDAL _c = new DataAccess.MyBookingDAL())
+            {
+                if (ModelState.IsValid == true)
+                {
+                    foreach (var item in model.GroupedPriceList)
+                    {
+                        _c.ChangeMultiplePrices(_c.GetSingleRoomTypeByID(item.RoomTypeID).PropertyID, item.RateID, item.RoomTypeID, Models.ViewModelTranslator.FromVM(item));
 
-            return View();
+                    }
+                }
+                    List<Models.Rate> RateList = _c.GetListOfRates(_c.CurrentProperty);
+                    List<Models.Price> PriceList = _c.GetPricesForDates(RateList.First().ID, DateTime.Now.Date, 30).ToList();
+                    return View(Models.ViewModelTranslator.ToVM(PriceList, RateList.First().ID, RateList));
+                
+
+            }
+            
         }
     }
 }

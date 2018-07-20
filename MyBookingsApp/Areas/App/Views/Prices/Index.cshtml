@@ -6,7 +6,7 @@
 
 <h2>Pricing</h2>
 
-@using (Html.BeginForm("Index", "Availability"))
+@using (Html.BeginForm("Index", "Prices"))
 {
 
 
@@ -32,6 +32,7 @@
                         {
                             <td>@(Model.GroupedPriceList[i].RoomTypeName) </td>
                             @Html.HiddenFor(a => a.GroupedPriceList[i].RoomTypeID)
+                            @Html.HiddenFor(a=>a.GroupedPriceList[i].RateID)
                         }
                     </tr>
                 </thead>

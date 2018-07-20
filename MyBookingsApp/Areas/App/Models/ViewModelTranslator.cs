@@ -110,12 +110,12 @@ namespace MyBookingsApp.Areas.App.Models
             return newAvail;
         }
 
-        public static List<Price> FromVM(Models.Management.PriceListViewModel VM)
+        public static List<Price> FromVM(Models.Management.PriceGroupedViewModel VM)
         {
             List<Price> newPrices = new List<Price>();
-            foreach (var outItem in VM.GroupedPriceList)
+            foreach (var outItem in VM.PriceList)
             {
-                outItem.PriceList.Select(a => new Price() { Date = a.Date, ID = a.ID, MinimumStay = a.MinimumStay, Price1 = (decimal)a.Price, StopSell = a.StopSell, RateID = outItem.RateID, RoomTypeID = outItem.RoomTypeID }).ToList().ForEach(c => newPrices.Add(c));
+                newPrices.Add(new Price() { Date = outItem.Date, ID = outItem.ID, MinimumStay = outItem.MinimumStay, Price1 = (decimal)outItem.Price, StopSell = outItem.StopSell, RateID = VM.RateID, RoomTypeID = VM.RoomTypeID });
             }
 
 
