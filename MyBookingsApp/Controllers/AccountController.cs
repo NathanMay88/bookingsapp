@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using MyBookingsApp.Models;
+using System.Web.SessionState;
 
 namespace MyBookingsApp.Controllers
 {
@@ -407,6 +408,7 @@ namespace MyBookingsApp.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            Session.Abandon();
             return RedirectToAction("Index", "Home");
         }
 

@@ -7,6 +7,7 @@ using MyBookingsApp.Areas.App.Models.Management;
 
 namespace MyBookingsApp.Areas.App.Controllers
 {
+    [Authorize]
     public class PricesController : Controller
     {
         [HttpGet]
@@ -22,10 +23,10 @@ namespace MyBookingsApp.Areas.App.Controllers
                     RedirectToAction("Index", "Rate");
                 }
                 List<Models.Price> PriceList = _c.GetPricesForDates(RateList.First().ID, DateTime.Now.Date, 30).ToList();
-                
-                return View(Models.ViewModelTranslator.ToVM(PriceList, RateList.First().ID, RateList));
+                List<Models.Roomtype> RoomTypeList = _c.GetListOfRoomTypes(_c.CurrentProperty);
+                return View(Models.ViewModelTranslator.ToVM(PriceList, RateList.First().ID, RateList, RoomTypeList));
             }
-            
+
         }
 
         [HttpPost]
@@ -41,13 +42,26 @@ namespace MyBookingsApp.Areas.App.Controllers
 
                     }
                 }
-                    List<Models.Rate> RateList = _c.GetListOfRates(_c.CurrentProperty);
-                    List<Models.Price> PriceList = _c.GetPricesForDates(RateList.First().ID, DateTime.Now.Date, 30).ToList();
-                    return View(Models.ViewModelTranslator.ToVM(PriceList, RateList.First().ID, RateList));
-                
+                List<Models.Rate> RateList = _c.GetListOfRates(_c.CurrentProperty);
+                List<Models.Price> PriceList = _c.GetPricesForDates(RateList.First().ID, DateTime.Now.Date, 30).ToList();
+                List<Models.Roomtype> RoomTypeList = _c.GetListOfRoomTypes(_c.CurrentProperty);
+                return View(Models.ViewModelTranslator.ToVM(PriceList, RateList.First().ID, RateList, RoomTypeList));
+
 
             }
-            
+
+        }
+
+        [HttpGet]
+        public ActionResult ChangeRoomType(int rt)
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult ChangeDates(DateTime sd, int non)
+        {
+            return View();
         }
     }
 }

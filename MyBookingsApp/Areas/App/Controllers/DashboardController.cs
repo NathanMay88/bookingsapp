@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace MyBookingsApp.Areas.App.Controllers
 {
+    [Authorize]
     public class DashboardController : Controller
     {
         // GET: App/Dashboard

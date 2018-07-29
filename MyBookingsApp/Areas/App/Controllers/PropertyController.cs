@@ -7,6 +7,7 @@ using MyBookingsApp.Areas.App.Models.Management;
 
 namespace MyBookingsApp.Areas.App.Controllers
 {
+    [Authorize]
     public class PropertyController : Controller
     {
         // GET: App/Property

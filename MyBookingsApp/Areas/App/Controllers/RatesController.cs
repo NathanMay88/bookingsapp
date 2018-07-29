@@ -6,9 +6,11 @@ using System.Web.Mvc;
 
 namespace MyBookingsApp.Areas.App.Controllers
 {
+    [Authorize]
     public class RatesController : Controller
     {
         // GET: App/Rates
+
         public ActionResult Index()
         {
             using (DataAccess.MyBookingDAL _c = new DataAccess.MyBookingDAL())

@@ -11,28 +11,38 @@
 
 
 
-    <div class="container">
-        <section class="options">
+    
+        <section class="options row">
             @for (int i = 0; i < Model.GroupedPriceList.Count; i++)
             {
                 @Html.HiddenFor(a => a.GroupedPriceList[i].RoomTypeID)
             }
             @*Options will be rendered in Partial*@
-            @Html.EditorFor(a => a.PriceOptions.StartDate, new { htmlAttributes = new { @class = "datepicker" } })
-            @Html.EditorFor(a => a.PriceOptions.EndDate, new { htmlAttributes = new { @class = "datepicker" } })
+            @Html.EditorFor(a => a.PriceOptions.StartDate, new { htmlAttributes = new { @class = "datepicker form-control col-md-3" } })
+            @Html.EditorFor(a => a.PriceOptions.EndDate, new { htmlAttributes = new { @class = "datepicker form-control col-md-3" } })
+            @Html.DropDownListFor(a=>a.SelectedRateID, Model.PriceOptions.RateList, new { @class= "form-control col-md-3" })
 
         </section>
 
-        <section class="availability-grid col-lg-12 hidden-xs">
+        <section class="pricing-grid col-lg-12 hidden-xs">
             <table class="table">
                 <thead>
                     <tr>
                         <td>Date</td>
                         @for (int i = 0; i <= Model.GroupedPriceList.Count - 1; i++)
                         {
-                            <td>@(Model.GroupedPriceList[i].RoomTypeName) </td>
+                            <td colspan="3">@(Model.GroupedPriceList[i].RoomTypeName) </td>
                             @Html.HiddenFor(a => a.GroupedPriceList[i].RoomTypeID)
-                            @Html.HiddenFor(a=>a.GroupedPriceList[i].RateID)
+                            @Html.HiddenFor(a => a.GroupedPriceList[i].RateID)
+                        }
+                    </tr>
+                    <tr>
+                        <td> </td>
+                        @for (int i = 0; i <= Model.GroupedPriceList.Count - 1; i++)
+                        {
+                            <td>Price</td>
+                            <td>Minimum Stay</td>
+                            <td>Stop/Sell</td>
                         }
                     </tr>
                 </thead>
@@ -47,9 +57,14 @@
                             {
                                 <td>
                                     @Html.EditorFor(a => a.GroupedPriceList[j].PriceList[i].Price, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.HiddenFor(a => a.GroupedPriceList[j].PriceList[i].Date)
-                            </td>
-
+                                    @Html.HiddenFor(a => a.GroupedPriceList[j].PriceList[i].Date)
+                                </td>
+                                <td>
+                                    @Html.EditorFor(a => a.GroupedPriceList[j].PriceList[i].MinimumStay, new { htmlAttributes = new { @class = "form-control" } })
+                                </td>
+                                <td>
+                                    @Html.CheckBoxFor(a => a.GroupedPriceList[j].PriceList[i].StopSell, new { htmlAttributes = new { @class = "form-control" } })
+                                </td>
                             }
                         </tr>
                     }
@@ -61,14 +76,13 @@
 
         <section class="availability-grid-phone col-xs-12 hidden-sm"></section>
 
-    </div>
 
     @section scripts{
 
         <script>
-        jQuery('.datepicker').datepicker({
-            format: 'dd/mm/yyyy',
-        });
+            jQuery('.datepicker').datepicker({
+                format: 'dd/mm/yyyy',
+            });
         </script>
     }
 }

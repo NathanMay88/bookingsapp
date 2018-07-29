@@ -18,5 +18,15 @@ namespace MyBookingsApp
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
 
+        protected void Application_End()
+        {
+            Session.RemoveAll();
+        }
+
+        protected void Session_Start(Object sender, EventArgs e)
+        {
+            Session["startValue"] = 0;
+        }
+
     }
 }

@@ -210,6 +210,9 @@
     <Compile Include="Areas\App\Controllers\RatesController.cs" />
     <Compile Include="Areas\App\Controllers\RoomTypesController.cs" />
     <Compile Include="Areas\App\DataAccess\MyBookingDAL.cs" />
+    <Compile Include="Areas\App\Models\Booking\BookingOptions.cs" />
+    <Compile Include="Areas\App\Models\Booking\BookingRateList.cs" />
+    <Compile Include="Areas\App\Models\Booking\BookingRoomList.cs" />
     <Compile Include="Areas\App\Models\Management\AvailabilityGroupedViewModel.cs" />
     <Compile Include="Areas\App\Models\Management\AvailabilityListViewModel.cs" />
     <Compile Include="Areas\App\Models\Management\PriceGroupedViewModel.cs" />

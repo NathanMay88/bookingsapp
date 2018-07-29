@@ -654,13 +654,13 @@ namespace MyBookingsApp.Areas.App.DataAccess
             }
         }
 
-        public string AddBookingStepOne(int RoomTypeID, decimal Price, int RatePlanID, DateTime StartDate, DateTime EndDate, int PropertyID)
+        public string AddBookingStepOne(int RoomTypeID, decimal Price, int RatePlanID, DateTime StartDate, DateTime EndDate, int PropertyID,string Bookingref)
         {
-            string bookingString = Guid.NewGuid().ToString();
+            
             try
             {
 
-                Booking NewBooking = new Booking()
+                Models.Booking NewBooking = new App.Models.Booking()
                 {
                     StartDate = StartDate,
                     EndDate = EndDate,
@@ -669,7 +669,7 @@ namespace MyBookingsApp.Areas.App.DataAccess
                     RateID = RatePlanID,
                     RoomTypeID = RoomTypeID,
                     PropertyID = PropertyID,
-                    BookingGuid = bookingString
+                    BookingGuid = Bookingref
                 };
                 _c.Bookings.InsertOnSubmit(NewBooking);
                 _c.SubmitChanges();
@@ -680,7 +680,7 @@ namespace MyBookingsApp.Areas.App.DataAccess
                 return null;
             }
 
-            return bookingString;
+            return Bookingref;
         }
         #endregion
 
@@ -776,6 +776,7 @@ namespace MyBookingsApp.Areas.App.DataAccess
                     Session newSession = _c.Sessions.Single(a => a.UserID == _userID);
                     newSession.SessionID = HttpContext.Current.Session.SessionID;
                     _currentProperty = newSession.CurrentPID;
+                    _c.SubmitChanges();
                 }
                 else
                 {

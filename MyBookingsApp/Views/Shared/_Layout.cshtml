@@ -8,7 +8,7 @@
     <link href="~/Content/dashboard.css" rel="stylesheet" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    
+
 </head>
 <body>
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
@@ -16,10 +16,17 @@
         <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
         <ul class="navbar-nav px-3">
             <li class="nav-item text-nowrap">
-                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { @id="logoffForm"}))
+                @using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { @id = "logoffForm" }))
                 {
-                    @Html.AntiForgeryToken()
-                <a class="nav-link" onclick="$('#logoffForm').submit();">Sign out @(User.Identity.Name)</a>
+                    if (HttpContext.Current.User.Identity.IsAuthenticated)
+                    {
+                        @Html.AntiForgeryToken()
+                        <a class="nav-link" onclick="$('#logoffForm').submit();">Sign out @(User.Identity.Name)</a>
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Login", "Login", "Account", new { area = "" }, null);
+                    }
                 }
             </li>
         </ul>
@@ -115,7 +122,7 @@
 
 
     @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
 </html>
