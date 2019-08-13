@@ -6,83 +6,124 @@
 
 <h2>Pricing</h2>
 
-@using (Html.BeginForm("Index", "Prices"))
+@using (Html.BeginForm("Update", "Prices"))
 {
 
 
 
-    
-        <section class="options row">
-            @for (int i = 0; i < Model.GroupedPriceList.Count; i++)
-            {
-                @Html.HiddenFor(a => a.GroupedPriceList[i].RoomTypeID)
-            }
-            @*Options will be rendered in Partial*@
-            @Html.EditorFor(a => a.PriceOptions.StartDate, new { htmlAttributes = new { @class = "datepicker form-control col-md-3" } })
-            @Html.EditorFor(a => a.PriceOptions.EndDate, new { htmlAttributes = new { @class = "datepicker form-control col-md-3" } })
-            @Html.DropDownListFor(a=>a.SelectedRateID, Model.PriceOptions.RateList, new { @class= "form-control col-md-3" })
 
-        </section>
+    <section class="options">
+        @for (int i = 0; i < Model.GroupedPriceList.Count; i++)
+        {
+            @Html.HiddenFor(a => a.GroupedPriceList[i].RoomTypeID)
+        }
+        @*Options will be rendered in Partial*@
+        @Html.HiddenFor(model => model.GroupedPriceList.First().RateID)
 
-        <section class="pricing-grid col-lg-12 hidden-xs">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <td>Date</td>
-                        @for (int i = 0; i <= Model.GroupedPriceList.Count - 1; i++)
-                        {
-                            <td colspan="3">@(Model.GroupedPriceList[i].RoomTypeName) </td>
-                            @Html.HiddenFor(a => a.GroupedPriceList[i].RoomTypeID)
-                            @Html.HiddenFor(a => a.GroupedPriceList[i].RateID)
-                        }
-                    </tr>
-                    <tr>
-                        <td> </td>
-                        @for (int i = 0; i <= Model.GroupedPriceList.Count - 1; i++)
-                        {
-                            <td>Price</td>
-                            <td>Minimum Stay</td>
-                            <td>Stop/Sell</td>
-                        }
-                    </tr>
-                </thead>
-                <tbody>
+        <div class="row">
+            <div class="form-group col-3">
+                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                    @Html.EditorFor(model => model.PriceOptions.StartDate, new { htmlAttributes = new { @value = Model.PriceOptions.StartDate.ToString("dd/MM/yyyy"), @class = "form-control datetimepicker-input", datatarget = "#datetimepicker1" } })
+                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-3">
+                <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                    @Html.EditorFor(model => model.PriceOptions.EndDate, new { htmlAttributes = new { @value = Model.PriceOptions.EndDate.ToString("dd/MM/yyyy"), @class = "form-control datetimepicker-input", datatarget = "#datetimepicker2" } })
+                    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-3">
+                <div class="input-group" id="selectedrateddb">
+                    @Html.DropDownListFor(model => model.SelectedRateID, Model.PriceOptions.RateList, new { @class = "form-control" })
 
-                    @for (int i = 0; i <= Model.GroupedPriceList.First().PriceList.Count - 1; i++)
+                </div>
+            </div>
+
+            <div class="form-group col-3">
+                <input type="submit" class="btn btn-success" value="Save" />
+            </div>
+        </div>
+
+    </section>
+
+    <section class="pricing-grid col-lg-12 hidden-xs">
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>Date</td>
+                    @for (int i = 0; i <= Model.GroupedPriceList.Count - 1; i++)
                     {
+                        <td colspan="3">
+                            @(Model.GroupedPriceList[i].RoomTypeName)
+                            @Html.HiddenFor(model => model.GroupedPriceList[i].RoomTypeID)
+                            @Html.HiddenFor(model => model.GroupedPriceList[i].RateID)
 
-                        <tr>
-                            <td>@(Model.GroupedPriceList.First().PriceList[i].Date.ToShortDateString())</td>
-                            @for (int j = 0; j <= Model.GroupedPriceList.Count - 1; j++)
-                            {
-                                <td>
-                                    @Html.EditorFor(a => a.GroupedPriceList[j].PriceList[i].Price, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.HiddenFor(a => a.GroupedPriceList[j].PriceList[i].Date)
-                                </td>
-                                <td>
-                                    @Html.EditorFor(a => a.GroupedPriceList[j].PriceList[i].MinimumStay, new { htmlAttributes = new { @class = "form-control" } })
-                                </td>
-                                <td>
-                                    @Html.CheckBoxFor(a => a.GroupedPriceList[j].PriceList[i].StopSell, new { htmlAttributes = new { @class = "form-control" } })
-                                </td>
-                            }
-                        </tr>
+                        </td>
+
                     }
-                </tbody>
-            </table>
-            <input type="submit" class="btn btn-lg" value="Save" />
+                </tr>
+                <tr>
+                    <td> </td>
+                    @for (int i = 0; i <= Model.GroupedPriceList.Count - 1; i++)
+                    {
+                        <td>Price</td>
+                        <td>Minimum Stay</td>
+                        <td>Stop/Sell</td>
+                    }
+                </tr>
+            </thead>
+            <tbody>
 
-        </section>
+                @for (int i = 0; i <= Model.GroupedPriceList.First().PriceList.Count - 1; i++)
+                {
 
-        <section class="availability-grid-phone col-xs-12 hidden-sm"></section>
+                    <tr>
+                        <td>@(Model.GroupedPriceList.First().PriceList[i].Date.ToShortDateString())</td>
+                        @for (int j = 0; j <= Model.GroupedPriceList.Count - 1; j++)
+                        {
+                            <td>
+                                @Html.TextBoxFor(model => model.GroupedPriceList[j].PriceList[i].Price,  new { @class = "form-control" })
+                                @Html.HiddenFor(model => model.GroupedPriceList[j].PriceList[i].Date)
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(model => model.GroupedPriceList[j].PriceList[i].MinimumStay, new { @class = "form-control" })
+                            </td>
+                            <td>
+                                @Html.CheckBoxFor(model => model.GroupedPriceList[j].PriceList[i].StopSell, new { htmlAttributes = new { @class = "form-control" } })
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <input type="submit" class="btn btn-lg" value="Save" />
+
+    </section>
+
+    <section class="availability-grid-phone col-xs-12 hidden-sm"></section>
 
 
     @section scripts{
 
+
         <script>
-            jQuery('.datepicker').datepicker({
-                format: 'dd/mm/yyyy',
-            });
+        $('#datetimepicker1').datetimepicker({
+            format: 'DD-MM-YYYY',
+            locale: 'en-gb',
+            defaultDate:'@Model.PriceOptions.StartDate.Date.ToString("yyyy-MM-dd")'
+        });
+
+                $('#datetimepicker2').datetimepicker({
+            format: 'DD-MM-YYYY',
+            locale:'en-gb',
+            defaultDate:'@Model.PriceOptions.EndDate.Date.ToString("yyyy-MM-dd")'
+        });
+
         </script>
     }
 }

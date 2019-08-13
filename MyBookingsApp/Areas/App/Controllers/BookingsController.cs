@@ -1,4 +1,7 @@
-﻿using System;
+﻿using MyBookingsApp.Areas.App.Models;
+using MyBookingsApp.Areas.App.Models.BookingModule;
+using MyBookingsApp.Areas.App.Models.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,18 +12,31 @@ namespace MyBookingsApp.Areas.App.Controllers
     public class BookingsController : Controller
     {
         [HttpGet]
-        public ActionResult Book(DateTime sd, int non = 1, int noa = 1, int noc = 0, int pid = -1)
+        public ActionResult Book(DateTime? sd = null, int non = 1, int noa = 1, int noc = 0, int pid = -1)
         {
             if (pid == -1)
             {
                 return RedirectToAction("NoID");
             }
+            if (sd == null)
+            {
+                sd = DateTime.Now;
+            }
 
-            return View();
+            IBookingModel FullAvailability = new FullAvailabilityBookingModel(pid, sd.Value.Date, sd.Value.AddDays(non).Date, "Own Website", noa,noc);
+
+            return View(FullAvailability);
         }
 
         [HttpPost]
-        public ActionResult Book(MyBookingsApp.Areas.App.Models.BookingModule.BookingStepOneViewModel Model)
+        public ActionResult UpdateBookableProducts(FullAvailabilityBookingModel currentModel)
+        {
+            return RedirectToAction("Book", new { sd = currentModel.Options.StartDate.Date.ToString("yyyy-MM-dd"), non = currentModel.Options.NumberOfNights, noa = currentModel.Options.NumberOfAdults, noc = currentModel.Options.NumberOfChildren, pid = currentModel.PID });
+        }
+
+
+        [HttpPost]
+        public ActionResult Book(BookingStepOneViewModel Model)
         {
             if (ModelState.IsValid != true)
             {
@@ -31,7 +47,7 @@ namespace MyBookingsApp.Areas.App.Controllers
                 Model.RoomList.Select(a => a.Selected == true);
 
                 //Select All Rooms that have been selected.
-                foreach (Models.BookingRoomList item in Model.RoomList.Where(a => a.Selected == true).ToList())
+                foreach (BookingRoomList item in Model.RoomList.Where(a => a.Selected == true).ToList())
                 {
                     //Select All Prices that have been Selected by user
                     foreach (var innerItem in item.AvailableRates.Where(b=>b.Selected == true))

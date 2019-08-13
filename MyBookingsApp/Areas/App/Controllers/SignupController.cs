@@ -56,7 +56,8 @@ namespace MyBookingsApp.Areas.App.Controllers
                         _c.AddRate(LocalRate);
                     }
                     Session.Add("CurrentProperty", _c.PID);
-                    _c.GetListOfRoomTypes(_c.PID).ForEach(a=>_c.CreateDefaultAvailability(a));
+                    // Should Not Be Used, Doubles Up Availability on the Rooms _c.GetListOfRoomTypes(_c.PID).ForEach(a=>_c.CreateDefaultAvailability(a));
+                    _c.GetListOfRoomTypes(_c.PID).ForEach(a => _c.CreateDefaultPricesOnRoom(a.ID));
                 }
                 //Save Property
                 //Save Rooms

@@ -67,8 +67,10 @@
             $('.fancybox-load').on("click", function () {
                 fancyboxProxy.open({
                     type: 'ajax',
-                    href: $(this).attr('data-fancybox-ajax')
-
+                    href: $(this).attr('data-fancybox-ajax'),
+                    width: '90%',
+                    height: '90%',
+                    autoSize : false
                 });
             });
         }

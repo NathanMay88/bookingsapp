@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyBookingsApp.Areas.App.DataAccess;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,5 +15,7 @@ namespace MyBookingsApp.Areas.App.Models
         public string Description { get; set; }
         public int MaxOccupancy { get; set; }
         public bool Selected { get; set; }
+
+     
     }
 }

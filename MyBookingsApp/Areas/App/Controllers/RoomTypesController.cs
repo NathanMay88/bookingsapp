@@ -58,7 +58,9 @@ namespace MyBookingsApp.Areas.App.Controllers
         {
             using (DataAccess.MyBookingDAL _c = new DataAccess.MyBookingDAL())
             {
-                return PartialView(Models.ViewModelTranslator.ToVM(_c.GetSingleRoomTypeByID(id)));
+                Models.Management.RoomTypeViewModel VM = Models.ViewModelTranslator.ToVM(_c.GetSingleRoomTypeByID(id));
+                VM.RoomOptions = _c.GetRoomOptionsForRoom(id);
+                return PartialView(VM);
             }
 
         }
@@ -72,6 +74,7 @@ namespace MyBookingsApp.Areas.App.Controllers
                 Models.Roomtype newRoomType = Models.ViewModelTranslator.FromVM(Model);
                 if (_c.EditRoomType(newRoomType, id))
                 {
+                    _c.AddRoomOptionsToRoom(Model.RoomOptions.Where(a => a.Selected == true).ToList(), Model.ID);
                     return Json(true);
                 }
                 ModelState.AddModelError(_c.Error.Message, _c.Error);
@@ -94,5 +97,7 @@ namespace MyBookingsApp.Areas.App.Controllers
             }
             return Json(false);
         }
+
+      
     }
 }

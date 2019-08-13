@@ -30,7 +30,7 @@ namespace MyBookingsApp.Areas.App.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(PriceListViewModel model)
+        public ActionResult Update(PriceListViewModel model)
         {
             using (DataAccess.MyBookingDAL _c = new DataAccess.MyBookingDAL())
             {
@@ -42,10 +42,18 @@ namespace MyBookingsApp.Areas.App.Controllers
 
                     }
                 }
+                
+                
+                // Needed to make sure the values are correct on the page
+                ModelState.Clear();
                 List<Models.Rate> RateList = _c.GetListOfRates(_c.CurrentProperty);
-                List<Models.Price> PriceList = _c.GetPricesForDates(RateList.First().ID, DateTime.Now.Date, 30).ToList();
+                List<Models.Price> PriceList = _c.GetPricesForDates(model.SelectedRateID, model.PriceOptions.StartDate, (model.PriceOptions.EndDate - model.PriceOptions.StartDate).Days).ToList();
                 List<Models.Roomtype> RoomTypeList = _c.GetListOfRoomTypes(_c.CurrentProperty);
-                return View(Models.ViewModelTranslator.ToVM(PriceList, RateList.First().ID, RateList, RoomTypeList));
+                PriceListViewModel vm = Models.ViewModelTranslator.ToVM(PriceList, model.SelectedRateID, RateList, RoomTypeList);
+                vm.SelectedRateID = model.SelectedRateID;
+                vm.PriceOptions.StartDate = model.PriceOptions.StartDate;
+                vm.PriceOptions.EndDate = model.PriceOptions.EndDate;
+                return View("Index",vm);
 
 
             }

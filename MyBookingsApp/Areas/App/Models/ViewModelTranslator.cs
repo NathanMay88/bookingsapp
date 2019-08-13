@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace MyBookingsApp.Areas.App.Models
 {
-    static class ViewModelTranslator
+    internal static class ViewModelTranslator
     {
 
         #region From VM
@@ -82,6 +81,7 @@ namespace MyBookingsApp.Areas.App.Models
             return newRoom;
         }
 
+
         public static Rate FromVM(Models.Management.RatePlanViewModel VM)
         {
             Rate newRate = new Rate
@@ -140,6 +140,11 @@ namespace MyBookingsApp.Areas.App.Models
 
             };
             return VM;
+        }
+
+        public static List<Models.Management.RoomOptionViewModel> ToVM(List<Models.RoomOption> DBModel)
+        {
+            return DBModel.Select(a => new Models.Management.RoomOptionViewModel() { Description = a.Option, IconLocation = a.Icon, ID = a.ID, Selected = false }).ToList();   
         }
 
         public static Models.Management.RatePlanViewModel ToVM(Models.Rate DBModel)
@@ -269,7 +274,15 @@ namespace MyBookingsApp.Areas.App.Models
                     PriceList = item.Select(a => new Management.PriceViewModel() { Date = a.Date, ID = a.ID, MinimumStay = a.MinimumStay, Price = (float)a.Price1, StopSell = a.StopSell }).ToList()
                 };
                 PriceVM.GroupedPriceList.Add(priceGroup);
-                PriceVM.PriceOptions = new Models.Management.PriceOptionsViewModel() { StartDate = DateTime.Now.Date, EndDate = DateTime.Now.AddDays(30).Date, RateList = rateList.Select(a => new System.Web.Mvc.SelectListItem() { Text = a.Name, Value = a.ID.ToString(), Selected = (a.ID == DBModel.First().ID) ? true : false }).ToList(), RoomTypeList =  roomTypeList.Select(a => new System.Web.Mvc.SelectListItem() { Text = a.Name, Value = a.ID.ToString(), Selected = (a.ID == DBModel.First().RoomTypeID) ? true : false }).ToList() };
+                PriceVM.PriceOptions = new Models.Management.PriceOptionsViewModel() { StartDate = DateTime.Now.Date, EndDate = DateTime.Now.AddDays(30).Date, RateList = rateList.Select(a => new System.Web.Mvc.SelectListItem() { Text = a.Name, Value = a.ID.ToString(), Selected = false }).ToList(), RoomTypeList = roomTypeList.Select(a => new System.Web.Mvc.SelectListItem() { Text = a.Name, Value = a.ID.ToString(), Selected = (a.ID == DBModel.First().RoomTypeID) ? true : false }).ToList() };
+
+                foreach (var priceItem in PriceVM.PriceOptions.RateList)
+                {
+                    if (DBModel.First().RateID.ToString() == priceItem.Value)
+                    {
+                        priceItem.Selected = true;
+                    }
+                }
             }
 
             return PriceVM;

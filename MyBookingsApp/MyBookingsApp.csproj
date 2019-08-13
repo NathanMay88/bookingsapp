@@ -27,6 +27,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>2.1</TypeScriptToolsVersion>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -205,6 +206,8 @@
     <Compile Include="Areas\App\Controllers\AvailabilityController.cs" />
     <Compile Include="Areas\App\Controllers\BookingsController.cs" />
     <Compile Include="Areas\App\Controllers\DashboardController.cs" />
+    <Compile Include="Areas\App\Models\Booking\NewBooking\FullAvailabilityBookingModel.cs" />
+    <Compile Include="Areas\App\Models\Booking\NewBooking\Interfaces\IBookingModel.cs" />
     <Compile Include="Areas\App\Controllers\PricesController.cs" />
     <Compile Include="Areas\App\Controllers\PropertyController.cs" />
     <Compile Include="Areas\App\Controllers\RatesController.cs" />
@@ -213,8 +216,13 @@
     <Compile Include="Areas\App\Models\Booking\BookingOptions.cs" />
     <Compile Include="Areas\App\Models\Booking\BookingRateList.cs" />
     <Compile Include="Areas\App\Models\Booking\BookingRoomList.cs" />
+    <Compile Include="Areas\App\Models\Booking\NewBooking\FullAvailability.cs" />
+    <Compile Include="Areas\App\Models\Booking\NewBooking\FullAvailabilityPrice.cs" />
+    <Compile Include="Areas\App\Models\Booking\NewBooking\Interfaces\IAvailableRates.cs" />
+    <Compile Include="Areas\App\Models\Booking\NewBooking\Interfaces\IAvailableRoom.cs" />
     <Compile Include="Areas\App\Models\Management\AvailabilityGroupedViewModel.cs" />
     <Compile Include="Areas\App\Models\Management\AvailabilityListViewModel.cs" />
+    <Compile Include="Areas\App\Models\Management\ImageViewModel.cs" />
     <Compile Include="Areas\App\Models\Management\PriceGroupedViewModel.cs" />
     <Compile Include="Areas\App\Models\Management\PropertyShortItemViewModel.cs" />
     <Compile Include="Areas\App\Models\ViewModelTranslator.cs" />
@@ -264,6 +272,9 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bookingform.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap-grid.css" />
@@ -400,6 +411,7 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
     <Content Include="Areas\App\Views\Prices\Index.cshtml" />
+    <Content Include="Areas\App\Views\Bookings\Book.cshtml" />
     <None Include="Dockerfile" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -518,7 +530,6 @@
     <Folder Include="Areas\App\Models\Products\Extras\" />
     <Folder Include="Areas\App\Models\Products\RulesEngine\" />
     <Folder Include="Areas\App\Models\Products\Upsell\" />
-    <Folder Include="Areas\App\Views\Bookings\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

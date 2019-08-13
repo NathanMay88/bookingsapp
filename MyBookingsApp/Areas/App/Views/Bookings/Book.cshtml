@@ -1,0 +1,124 @@
+﻿@using MyBookingsApp.Areas.App.Models.Interface;
+@using MyBookingsApp.Areas.App.Models;
+@model MyBookingsApp.Areas.App.Models.FullAvailabilityBookingModel
+
+@{
+    ViewBag.Title = "Book";
+}
+
+<link href="~/Content/bookingform.css" rel="stylesheet" />
+<h2>Book</h2>
+
+<section id="booking-grid-options" class="container">
+
+    @*Start Date, End Date, Number of People Controls*@
+    @using (Html.BeginForm("UpdateBookableProducts", "Bookings", FormMethod.Post))
+    {
+        @Html.HiddenFor(a => a.PID)
+        <div class="row">
+            <div class="form-group col-3">
+                @Html.LabelFor(a => a.Options.StartDate)
+                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                    @Html.TextBoxFor(a => a.Options.StartDate, new { @value = Model.Options.StartDate.ToString("dd/MM/yyyy"), @class = "form-control datetimepicker-input", datatarget = "#datetimepicker1" })
+                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-2">
+                @Html.LabelFor(a => a.Options.NumberOfNights)
+                @Html.TextBoxFor(a => a.Options.NumberOfNights, new { @class = "form-control" })
+            </div>
+            <div class="form-group col-2">
+                @Html.LabelFor(a => a.Options.NumberOfAdults)
+                @Html.TextBoxFor(a => a.Options.NumberOfAdults, new { @class = "form-control" })
+            </div>
+            <div class="form-group col-2">
+                @Html.LabelFor(a => a.Options.NumberOfChildren)
+                @Html.TextBoxFor(a => a.Options.NumberOfChildren, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group col-3">
+                <input type="submit" class="btn btn-success" value="Update" />
+            </div>
+        </div>
+        <div class="row">
+            @*Filter Information goes here*@
+        </div>
+    }
+
+</section>
+
+<section class="booking-grid container">
+
+    @foreach (FullAvailabilityRoom item in Model.RoomList)
+    {
+        <div class="bookable-room row">
+            <div class="col-3">
+                <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80" alt="@item.RoomName" title="@item.RoomName" />
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h3>@item.RoomName</h3>
+                    </div>
+                    <div class="col-md-8">
+                        <h4>Max: @item.MaxPeople People</h4>
+                    </div>
+                </div>
+                <p>@item.Description</p>
+
+                <div class="price-group container-fluid">
+                    @foreach (FullAvailabilityPriceItem priceItem in item.AvailableRates)
+                    {
+
+                        <div class="price-item row">
+                            <h4>@priceItem.RateName</h4>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-8">
+                                <p>Some Price Description here</p>
+                            </div>
+                            <div class="col-4">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h5>€@Math.Round(priceItem.Price, 2, MidpointRounding.ToEven)</h5>
+                                    </div>
+                                    <div class="col-6">
+                                        @if (item.Available != true)
+                                        {
+                                            <p>Not Available</p>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-success" value="Book Now" />
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+        </div>
+    }
+
+</section>
+
+@section scripts{
+
+
+    <script>
+        $('#datetimepicker1').datetimepicker({
+            format: 'DD-MM-YYYY',
+            locale: 'en-gb',
+            defaultDate:'@Model.Options.StartDate.Date.ToString("yyyy-MM-dd")'
+        });
+
+
+    </script>
+}
+

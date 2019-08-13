@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 17, 14" name="RezDBModel">
+  <DataContextMoniker Name="/RezDBModelDataContext" />
+  <nestedChildShapes>
+    <classShape Id="b3b5d233-ece2-41f4-a834-4466761e255b" absoluteBounds="6.25, 4.5, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/RezDBModelDataContext/User_Property" />
+      <nestedChildShapes>
+        <elementListCompartment Id="70a026a9-0f90-487b-b489-b0a2ab674aa5" absoluteBounds="6.265, 4.96, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9ad02065-f1b7-4c3b-8f8d-b4f75e4da30c" absoluteBounds="3.5, 2.625, 2, 3.1170068359375005">
+      <DataClassMoniker Name="/RezDBModelDataContext/AspNetUser" />
+      <nestedChildShapes>
+        <elementListCompartment Id="97023ac2-4250-4588-b32e-646ca743f74a" absoluteBounds="3.515, 3.085, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="7149754f-7e3a-4160-a908-ecfc82ffad8e" absoluteBounds="9, 11.125, 2, 1.9631982421874987">
+      <DataClassMoniker Name="/RezDBModelDataContext/Availability" />
+      <nestedChildShapes>
+        <elementListCompartment Id="cedf730a-b1b1-4f10-8606-4b927636b778" absoluteBounds="9.015, 11.585, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="872d8bb9-4366-45e8-a9c1-50de973288fe" absoluteBounds="12, 8.25, 2, 3.6939111328124987">
+      <DataClassMoniker Name="/RezDBModelDataContext/Booking" />
+      <nestedChildShapes>
+        <elementListCompartment Id="f898ab88-fca2-485a-9890-2eede59f72ae" absoluteBounds="12.015, 8.71, 1.9700000000000002, 3.1339111328125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="ce33cb7f-17c5-4f7b-bf0e-0aeab17416cd" absoluteBounds="0.75, 6.375, 2, 3.5016097005208335">
+      <DataClassMoniker Name="/RezDBModelDataContext/Company" />
+      <nestedChildShapes>
+        <elementListCompartment Id="49abc255-2249-4af7-84b3-a4908c0a589d" absoluteBounds="0.765, 6.835, 1.9700000000000002, 2.941609700520833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="c664506a-5fae-43fb-ab04-5371914f63b9" absoluteBounds="9.25, 3.5, 2, 3.1170068359375005">
+      <DataClassMoniker Name="/RezDBModelDataContext/Customer" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5ac90319-5786-46df-8a68-441c44e4fd9c" absoluteBounds="9.265, 3.96, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="09b41db6-c08b-47a0-af37-b1942e0a5ac9" absoluteBounds="14.75, 9.375, 2, 1.3862939453124987">
+      <DataClassMoniker Name="/RezDBModelDataContext/MainBooking_SubBooking" />
+      <nestedChildShapes>
+        <elementListCompartment Id="051d9b1e-981a-48ec-9341-93078b6a333b" absoluteBounds="14.765, 9.835, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="1fe2ac1f-da0c-4680-a86f-72db90c0c481" absoluteBounds="9, 8.25, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/RezDBModelDataContext/Price" />
+      <nestedChildShapes>
+        <elementListCompartment Id="91e58dff-b01f-4241-b506-b371b8f25a5a" absoluteBounds="9.015, 8.71, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="4cc33a90-29c2-4fa0-b6f8-4dc61d1516ac" absoluteBounds="3.5, 6.5, 2, 3.3093082682291666">
+      <DataClassMoniker Name="/RezDBModelDataContext/Property" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8780f5fb-65b3-4e7d-a9da-6a36d1f2759d" absoluteBounds="3.515, 6.96, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="42665e80-3fd6-42a7-b697-abd2f37ae1a8" absoluteBounds="6.25, 6.875, 2, 2.9247054036458318">
+      <DataClassMoniker Name="/RezDBModelDataContext/Rate" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3de9d7e7-eca0-4412-932f-371cebb85ef1" absoluteBounds="6.265, 7.335, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="618567c6-905c-499d-a54e-9102b73f8668" absoluteBounds="6.25, 10.625, 2, 3.1170068359375023">
+      <DataClassMoniker Name="/RezDBModelDataContext/Roomtype" />
+      <nestedChildShapes>
+        <elementListCompartment Id="073eca02-80e4-4e3b-a5fd-7fff56075127" absoluteBounds="6.265, 11.085, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="7b3b7365-02c8-49bd-8d9a-adee49dabade" absoluteBounds="6.75, 0.75, 2, 1.3862939453125003">
+      <DataClassMoniker Name="/RezDBModelDataContext/Session" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d10b308d-7a6e-4e6a-a0fa-f03bcfa3eba6" absoluteBounds="6.765, 1.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(5.5 : 5.12100341796875); (6.25 : 5.12100341796875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RezDBModelDataContext/AspNetUser/AspNetUser_User_Property" />
+      <nodes>
+        <classShapeMoniker Id="9ad02065-f1b7-4c3b-8f8d-b4f75e4da30c" />
+        <classShapeMoniker Id="b3b5d233-ece2-41f4-a834-4466761e255b" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(11.15625 : 6.6170068359375); (11.15625 : 10.7652498372396); (12 : 10.7652498372396)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RezDBModelDataContext/Customer/Customer_Booking" />
+      <nodes>
+        <classShapeMoniker Id="c664506a-5fae-43fb-ab04-5371914f63b9" />
+        <classShapeMoniker Id="872d8bb9-4366-45e8-a9c1-50de973288fe" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(14 : 10.0681469726562); (14.75 : 10.0681469726562)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RezDBModelDataContext/Booking/Booking_MainBooking_SubBooking" />
+      <nodes>
+        <classShapeMoniker Id="872d8bb9-4366-45e8-a9c1-50de973288fe" />
+        <classShapeMoniker Id="09b41db6-c08b-47a0-af37-b1942e0a5ac9" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(14 : 9.65907348632813); (14.75 : 9.65907348632813)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RezDBModelDataContext/Booking/Booking_MainBooking_SubBooking1" />
+      <nodes>
+        <classShapeMoniker Id="872d8bb9-4366-45e8-a9c1-50de973288fe" />
+        <classShapeMoniker Id="09b41db6-c08b-47a0-af37-b1942e0a5ac9" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 6.5); (5.875 : 6.125); (5.875 : 6.2612939453125); (6.25 : 5.8862939453125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/RezDBModelDataContext/Property/Property_User_Property" />
+      <nodes>
+        <classShapeMoniker Id="4cc33a90-29c2-4fa0-b6f8-4dc61d1516ac" />
+        <classShapeMoniker Id="b3b5d233-ece2-41f4-a834-4466761e255b" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 6.74600341796875); (11.0729166666667 : 6.74600341796875 : JumpStart); (11.2395833333333 : 6.74600341796875 : JumpEnd); (13 : 6.74600341796875); (13 : 8.25)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RezDBModelDataContext/Property/Property_Booking" />
+      <nodes>
+        <classShapeMoniker Id="4cc33a90-29c2-4fa0-b6f8-4dc61d1516ac" />
+        <classShapeMoniker Id="872d8bb9-4366-45e8-a9c1-50de973288fe" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 8.15465413411458); (3.5 : 8.15465413411458)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RezDBModelDataContext/Company/Company_Property" />
+      <nodes>
+        <classShapeMoniker Id="ce33cb7f-17c5-4f7b-bf0e-0aeab17416cd" />
+        <classShapeMoniker Id="4cc33a90-29c2-4fa0-b6f8-4dc61d1516ac" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.25 : 7.5312475); (11.0729166666667 : 7.5312475 : JumpStart); (11.2395833333333 : 7.5312475 : JumpEnd); (12.4687475 : 7.5312475); (12.4687475 : 8.25)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RezDBModelDataContext/Rate/Rate_Booking" />
+      <nodes>
+        <classShapeMoniker Id="42665e80-3fd6-42a7-b697-abd2f37ae1a8" />
+        <classShapeMoniker Id="872d8bb9-4366-45e8-a9c1-50de973288fe" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.25 : 9.02485270182292); (9 : 9.02485270182292)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RezDBModelDataContext/Rate/Rate_Price" />
+      <nodes>
+        <classShapeMoniker Id="42665e80-3fd6-42a7-b697-abd2f37ae1a8" />
+        <classShapeMoniker Id="1fe2ac1f-da0c-4680-a86f-72db90c0c481" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 8.33735270182292); (6.25 : 8.33735270182292)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RezDBModelDataContext/Property/Property_Rate" />
+      <nodes>
+        <classShapeMoniker Id="4cc33a90-29c2-4fa0-b6f8-4dc61d1516ac" />
+        <classShapeMoniker Id="42665e80-3fd6-42a7-b697-abd2f37ae1a8" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.25 : 12.1065991210937); (9 : 12.1065991210937)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RezDBModelDataContext/Roomtype/Roomtype_Availability" />
+      <nodes>
+        <classShapeMoniker Id="618567c6-905c-499d-a54e-9102b73f8668" />
+        <classShapeMoniker Id="7149754f-7e3a-4160-a908-ecfc82ffad8e" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.25 : 10.9763749186198); (12 : 10.9763749186198)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RezDBModelDataContext/Roomtype/Roomtype_Booking" />
+      <nodes>
+        <classShapeMoniker Id="618567c6-905c-499d-a54e-9102b73f8668" />
+        <classShapeMoniker Id="872d8bb9-4366-45e8-a9c1-50de973288fe" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.25 : 10.625); (8.625 : 10.25); (8.625 : 10.7804996744792); (9 : 10.4054996744792)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/RezDBModelDataContext/Roomtype/Roomtype_Price" />
+      <nodes>
+        <classShapeMoniker Id="618567c6-905c-499d-a54e-9102b73f8668" />
+        <classShapeMoniker Id="1fe2ac1f-da0c-4680-a86f-72db90c0c481" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(4.5 : 9.80930826822917); (4.5 : 12.1835034179688); (6.25 : 12.1835034179688)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RezDBModelDataContext/Property/Property_Roomtype" />
+      <nodes>
+        <classShapeMoniker Id="4cc33a90-29c2-4fa0-b6f8-4dc61d1516ac" />
+        <classShapeMoniker Id="618567c6-905c-499d-a54e-9102b73f8668" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

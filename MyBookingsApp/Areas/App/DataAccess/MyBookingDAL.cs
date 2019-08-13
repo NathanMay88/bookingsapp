@@ -157,6 +157,24 @@ namespace MyBookingsApp.Areas.App.DataAccess
 
         }
 
+        public List<Roomtype> GetListOfRoomTypesForBooking(int PropertyID)
+        {
+            try
+            {
+         
+         
+                    return _c.Roomtypes.Where(a => a.PropertyID == PropertyID).ToList();
+         
+         
+         
+            }
+            catch (Exception ex)
+            {
+                Error = ex;
+                return null;
+            }
+        }
+
         public List<Roomtype> GetListOfRoomTypes(int PropertyID)
         {
             try
@@ -182,6 +200,7 @@ namespace MyBookingsApp.Areas.App.DataAccess
                 _c.Roomtypes.InsertOnSubmit(NewRoomType);
                 _c.SubmitChanges();
                 CreateDefaultAvailability(NewRoomType);
+                //Will Not Proc when First Signed Up
                 CreateDefaultPricesOnRoom(NewRoomType.ID);
                 return true;
             }
@@ -249,6 +268,61 @@ namespace MyBookingsApp.Areas.App.DataAccess
                 return false;
             }
         }
+
+        public List<RoomOption> GetRoomOptions()
+        {
+            return _c.RoomOptions.ToList();
+
+        }
+
+        public List<Models.Management.RoomOptionViewModel> GetRoomOptionsForRoom(int roomID)
+        {
+            List<RoomOption> selectedRoomOptions = _c.RoomOption_RoomIDs.Where(a => a.RoomID == roomID).Select(b=>b.RoomOption).ToList();
+            List<RoomOption> allRoomOptions = this.GetRoomOptions();
+
+            return allRoomOptions.Select(a => new Models.Management.RoomOptionViewModel() { Description = a.Option, IconLocation = a.Icon, ID = a.ID, Selected = selectedRoomOptions.SingleOrDefault(b => b.ID == a.ID) == null ? false : true }).ToList();
+            }
+
+        public bool AddRoomOptionsToRoom(List<Models.Management.RoomOptionViewModel> roomOptions, int roomID)
+        {
+            //Build list of RoomOptions.
+            List<RoomOption_RoomID> option_RoomIDs = new List<RoomOption_RoomID>();
+            foreach (Models.Management.RoomOptionViewModel item in roomOptions)
+            {
+                option_RoomIDs.Add(new RoomOption_RoomID() { RoomID = roomID, RoomOptionID = (short)item.ID });
+            }
+
+            //Remove all current room Options
+            this.RemoveRoomOptions(roomID);
+            try
+            {
+                _c.RoomOption_RoomIDs.InsertAllOnSubmit(option_RoomIDs);
+                _c.SubmitChanges();
+            }
+            catch (Exception)
+            {
+
+                new Exception("There was an issue Adding the new Room Options.");
+                return false;
+            }
+            return true;
+
+        }
+
+        private void RemoveRoomOptions(int roomID)
+        {
+            try
+            {
+                _c.RoomOption_RoomIDs.DeleteAllOnSubmit(_c.RoomOption_RoomIDs.Where(a => a.RoomID == roomID));
+                _c.SubmitChanges();
+            }
+            catch (Exception)
+            {
+
+                new Exception("There was an issue deleting the current Room Options.");
+            }
+        }
+
         #endregion
 
         #region Rates
@@ -375,6 +449,32 @@ namespace MyBookingsApp.Areas.App.DataAccess
 
         #region Prices
 
+
+        public Dictionary<Rate, List<Price>> GetPricesForDates(int RoomID, DateTime StartDate, DateTime EndDate)
+        {
+            try
+            {
+                Dictionary<Rate, List<Price>> RateandPrices = new Dictionary<Rate, List<Price>>();
+                //Is Rate Owned by logged in user?
+                foreach (Rate _r in _c.Rates.Where(a=>a.PropertyID == _c.Roomtypes.Single(b=>b.ID == RoomID).PropertyID))
+                {
+
+
+                    RateandPrices.Add(_r, _c.Prices.Where(a => a.RoomTypeID == RoomID && a.RateID == _r.ID && (a.Date >= StartDate && a.Date <= EndDate)).ToList());
+                    
+                }
+                return RateandPrices;
+                //return _c.Rates.Select(a => a.Prices.Where(b => b.RoomTypeID == RoomID && (b.Date >= StartDate && b.Date <= EndDate))).ToDictionary(a => a.FirstOrDefault().Rate, c => c.ToList());
+            }
+            catch (Exception ex)
+            {
+                Error = ex;
+                return null;
+            }
+
+        }
+
+
         public List<Price> GetPricesForDates(int RateID, DateTime StartDate, int NOD)
         {
             try
@@ -452,36 +552,36 @@ namespace MyBookingsApp.Areas.App.DataAccess
         public bool CreateDefaultPricesOnRoom(int newRoomTypeID)
         {
 
-            //Get a list of rates for this user
-            List<Rate> rateList = _c.Properties.SingleOrDefault(a => a.Roomtypes.Single(b => b.ID == newRoomTypeID) != null).Rates.ToList();
+            //Get a list of rates for this property
+            List<Rate> rateList = _c.Rates.Where(a => a.PropertyID == this.PID).ToList();
             foreach (Rate item in rateList)
             {
 
-            
-            List<Price> NewPrices = new List<Price>();
-            for (int i = 0; i < 365; i++)
-            {
-                NewPrices.Add(new Price() { Date = DateTime.Now.AddDays(i), MinimumStay = 1, Price1 = 0.00M, RateID = item.ID, RoomTypeID = newRoomTypeID, StopSell = false });
-            }
 
-            try
-            {
-                _c.Prices.InsertAllOnSubmit(NewPrices);
-                _c.SubmitChanges();
-                return true;
-            }
-            catch (Exception)
-            {
+                List<Price> NewPrices = new List<Price>();
+                for (int i = 0; i < 365; i++)
+                {
+                    NewPrices.Add(new Price() { Date = DateTime.Now.AddDays(i), MinimumStay = 1, Price1 = 0.00M, RateID = item.ID, RoomTypeID = newRoomTypeID, StopSell = false });
+                }
 
-                throw;
-            }
+                try
+                {
+                    _c.Prices.InsertAllOnSubmit(NewPrices);
+                    _c.SubmitChanges();
+                    
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
             }
 
 
             return false;
         }
 
-        public bool ChangeMultiplePrices(int PropertyID,int RateID, int RoomID,  List<Models.Price> NewPriceValues)
+        public bool ChangeMultiplePrices(int PropertyID, int RateID, int RoomID, List<Models.Price> NewPriceValues)
         {
             try
             {
@@ -489,7 +589,7 @@ namespace MyBookingsApp.Areas.App.DataAccess
                 {
                     DateTime StartDate = NewPriceValues.First().Date;
                     DateTime EndDate = NewPriceValues.Last().Date;
-                    List<Price> PriceList = _c.Prices.Where(a => (a.RateID == RateID  && a.RoomTypeID == RoomID) && (a.Date >= StartDate && a.Date <= EndDate)).ToList();
+                    List<Price> PriceList = _c.Prices.Where(a => (a.RateID == RateID && a.RoomTypeID == RoomID) && (a.Date >= StartDate && a.Date <= EndDate)).ToList();
 
                     foreach (var item in PriceList)
                     {
@@ -566,15 +666,46 @@ namespace MyBookingsApp.Areas.App.DataAccess
             {
                 for (int i = 0; i < RoomTypeIDs.Count; i++)
                 {
-                if (_c.Roomtypes.Any(a => a.PropertyID == PropertyID && a.ID == RoomTypeIDs[i].ID))
-                {
+                    if (_c.Roomtypes.Any(a => a.PropertyID == PropertyID && a.ID == RoomTypeIDs[i].ID))
+                    {
                         returnAvail.AddRange(_c.Availabilities.Where(a => a.Roomtype.PropertyID == PropertyID && (a.Date >= StartDate && a.Date <= EndDate) && a.RoomtypeID == RoomTypeIDs[i].ID).ToList());
-                }
+                    }
                 }
                 return returnAvail;
             }
             catch (Exception ex)
             {
+                Error = ex;
+                return null;
+            }
+        }
+
+        public List<Availability> GetAvailabilityForRoom(int RoomID, DateTime StartDate, DateTime EndDate)
+        {
+            try
+            {
+                List<Availability> returnAvail = new List<Availability>();
+                returnAvail.AddRange(_c.Availabilities.Where(a => a.RoomtypeID == RoomID && (a.Date >= StartDate && a.Date <= EndDate)).ToList());
+                return returnAvail;
+            }
+            catch (Exception ex)
+            {
+                Error = ex;
+                return null;
+            }
+
+
+        }
+
+        public Dictionary<int, List<Availability>> GetAllAvailabilitiesForPropertty(int PropertyID, DateTime StartDate, DateTime EndDate, int NumberofAdults, int NumberofChildren)
+        {
+            try
+            {
+                return _c.Roomtypes.Where(a => a.PropertyID == PropertyID).ToDictionary(b => b.ID, c => c.Availabilities.Where(a => a.Date >= StartDate && a.Date <= EndDate).ToList());
+            }
+            catch (Exception ex)
+            {
+
                 Error = ex;
                 return null;
             }
@@ -597,12 +728,12 @@ namespace MyBookingsApp.Areas.App.DataAccess
         public bool CreateDefaultAvailability(Roomtype roomTypeItem)
         {
             List<Availability> AvailList = new List<Availability>();
-          
-                for (int i = 0; i < 365; i++)
-                {
-                    AvailList.Add(new Availability() { Availability1 = 0, ClosedToAvailability = 0, RoomtypeID = roomTypeItem.ID, StopSell = false, Date = DateTime.Now.AddDays(i).Date });
-                }
-            
+
+            for (int i = 0; i < 365; i++)
+            {
+                AvailList.Add(new Availability() { Availability1 = 0, ClosedToAvailability = 0, RoomtypeID = roomTypeItem.ID, StopSell = false, Date = DateTime.Now.AddDays(i).Date });
+            }
+
             try
             {
                 _c.Availabilities.InsertAllOnSubmit(AvailList);
@@ -654,9 +785,9 @@ namespace MyBookingsApp.Areas.App.DataAccess
             }
         }
 
-        public string AddBookingStepOne(int RoomTypeID, decimal Price, int RatePlanID, DateTime StartDate, DateTime EndDate, int PropertyID,string Bookingref)
+        public string AddBookingStepOne(int RoomTypeID, decimal Price, int RatePlanID, DateTime StartDate, DateTime EndDate, int PropertyID, string Bookingref)
         {
-            
+
             try
             {
 
@@ -773,8 +904,12 @@ namespace MyBookingsApp.Areas.App.DataAccess
             {
                 if (_c.Sessions.SingleOrDefault(a => a.UserID == _userID) != null)
                 {
-                    Session newSession = _c.Sessions.Single(a => a.UserID == _userID);
-                    newSession.SessionID = HttpContext.Current.Session.SessionID;
+                    //Get Old Session and store in memory
+                    Session oldSession = _c.Sessions.Single(a => a.UserID == _userID);
+                    _c.Sessions.DeleteOnSubmit(oldSession);
+                    _c.SubmitChanges();
+
+                    Session newSession = new Session() { CurrentPID = oldSession.CurrentPID, SessionID = HttpContext.Current.Session.SessionID, UserID = oldSession.UserID };
                     _currentProperty = newSession.CurrentPID;
                     _c.SubmitChanges();
                 }

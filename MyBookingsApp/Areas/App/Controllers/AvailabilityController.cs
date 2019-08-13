@@ -34,7 +34,8 @@ namespace MyBookingsApp.Areas.App.Controllers
                         
                     }
                 }
-
+                //Needed to make sure the correct values are shown on screen.
+                ModelState.Clear();
                 List<Models.Availability> AvailabilityList = _c.GetAvailabilities(_c.CurrentProperty, _c.GetListOfRoomTypes(_c.CurrentProperty), model.Options.StartDate, model.Options.EndDate).ToList();
                 List<Models.Roomtype> RoomTypeList = _c.GetListOfRoomTypes(_c.CurrentProperty);
                 return View(Models.ViewModelTranslator.ToVM(AvailabilityList, RoomTypeList));
